@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SGU Backlog Exam Form Winter 2025</title>
+    <title>Winter 25 Backlog Exam Form</title>
     <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Load Inter font -->
@@ -112,7 +112,7 @@
                                 <option value="" disabled selected>Select your branch</option>
                                 <option value="11: Bachelor of Technology  in Aeronautical Engineering">11: Bachelor of Technology  in Aeronautical Engineering</option>
                                 <option value="12: Bachelor of Technology  in Artificial Intelligence & Machine Learning">12: Bachelor of Technology  in Artificial Intelligence & Machine Learning</option>
-                                <option value="12: Bachelor of Technology in Civil Engineering">12: Bachelor of Technology in Civil Engineering</option>
+                                <option value="13: Bachelor of Technology in Civil Engineering">13: Bachelor of Technology in Civil Engineering</option>
                                 <option value="14: Bachelor of Technology in Computer Science Engineering">14: Bachelor of Technology in Computer Science Engineering</option>
                                 <option value="15: Bachelor of Technology in Electronics & Communication Engineering">15: Bachelor of Technology in Electronics & Communication Engineering</option>
                                 <option value="16: Bachelor of Computer Application">16: Bachelor of Computer Application</option>
@@ -183,7 +183,7 @@
 
                     <!-- --- NEW (Req 3): Total Fees Section --- -->
                     <div id="feesSection">
-                        <label class="block text-sm font-medium text-gray-700">Total Estimated Fees</label>
+                        <label class="block text-sm font-medium text-gray-700">Total Fees</label>
                         <div id="feesContainer" class="mt-2 p-4 border border-green-300 rounded-md bg-green-50">
                             <p id="feesDisplay" class="text-lg font-semibold text-green-800">₹ 0.00</p>
                             <p class="text-xs text-gray-500">Based on ₹ 300.00 per course.</p>
@@ -199,11 +199,18 @@
                                 <input id="declarationCheckbox" name="declaration" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
                             </div>
                             <div class="ml-3 text-sm">
-                                <label for="declarationCheckbox" class="font-medium text-gray-700">"I certify that the information provided is accurate and complete. I understand that this submission is final and cannot be modified."</label>
+                                <label for="declarationCheckbox" class="font-medium text-gray-700">I declare all information is correct. I am responsible for any mistakes.</label>
                             </div>
                         </div>
                     </fieldset>
                     
+</div>
+                            <div class="ml-3 text-sm">
+                                <label for="declarationCheckbox" class="font-medium text-gray-700"> I understand that this submission is final and cannot be modified.</label>
+                            </div>
+                        </div>
+                    </fieldset>
+
                     <!-- Submission Button -->
                     <div>
                         <!-- --- MODIFIED: Added disabled attribute --- -->
@@ -343,7 +350,7 @@
             }
         ]
     },
-    "12: Bachelor of Technology in Civil Engineering": {
+    "13: Bachelor of Technology in Civil Engineering": {
         "I & II": [
             {
                 "name": "Indian Science, Engineering and Technology (Past, Present and Future)",
@@ -2925,11 +2932,18 @@
                 }
             }
 
-            /**
+       /**
              * Handles the form submission.
              */
             async function handleFormSubmit(e) {
                 e.preventDefault(); 
+
+                // --- START: Confirmation Popup Code ---
+                const confirmed = confirm("Are you sure you want to submit the form?\n\nPlease double-check your selected Semesters, Courses and Personal Details.\n\nAfter Submission you can not edit it and this is only one time submission");
+                if (!confirmed) {
+                    return; // Stop the submission if the user clicks 'Cancel'
+                }
+                // --- END: Confirmation Popup Code ---
 
                 if (!formScriptURL || !formScriptURL.startsWith('https://')) {
                      showError('Form is not configured. Please check the formScriptURL variable.');
@@ -2937,6 +2951,7 @@
                 }
 
                 setLoading(true);
+
                 hideMessages();
 
                 try {
@@ -3067,7 +3082,4 @@
     </script>
 </body>
 </html>
-
-
-
 
