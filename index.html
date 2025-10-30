@@ -1,0 +1,3070 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Exam Form</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Inter font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Apply Inter font */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Simple spinner for loading state */
+        .spinner {
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 2px solid #fff;
+            width: 1.25rem; /* 20px */
+            height: 1.25rem; /* 20px */
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* --- NEW (Req 1 & 3): 3D Effect & Darker Shade --- */
+        .input-3d {
+            background-color: #f3f4f6; /* bg-gray-100 */
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .input-3d:focus {
+            background-color: #fff;
+            box-shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    
+    <div class="max-w-3xl w-full space-y-8">
+        <!-- Form Container -->
+        <!-- --- MODIFIED (Req 1): Added border --- -->
+        <div class="bg-white p-8 sm:p-10 shadow-2xl rounded-2xl border border-gray-300">
+            <header class="text-center mb-8">
+                
+                <img src="https://lh3.googleusercontent.com/d/12q2mZ0WAHwwxFhOWbXL8qNOjaxkqwqiS" alt="Form Header" class="mx-auto w-full max-w-lg rounded-md shadow-md">
+                
+                <p class="mt-4 text-2xl font-semibold text-gray-800">
+                    Winter 2025 Backlog Exam Form
+                </p>
+            </header>
+
+            <!-- Success Message -->
+            <div id="successMessage" class="hidden p-4 mb-6 rounded-md bg-green-100 border border-green-300">
+                <!-- --- MODIFIED (Req Unique ID): Added span for FormID --- -->
+                <p class="text-sm font-medium text-green-800" id="successText">
+                    Form submitted successfully! Your response has been recorded.
+                </p>
+            </div>
+
+            <!-- Error Message -->
+            <div id="errorMessage" class="hidden p-4 mb-6 rounded-md bg-red-100 border border-red-300">
+                <!-- --- MODIFIED (Req 2): Added id for error text --- -->
+                <p class="text-sm font-medium text-red-800" id="errorText">
+                    An error occurred. Please try submitting the form again.
+                </p>
+            </div>
+
+            <!-- The Form -->
+            <form id="examForm">
+                <div class="space-y-6">
+
+                    <!-- Personal Details Section -->
+                    <fieldset class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="fullName" class="block text-sm font-medium text-gray-700">Name</label>
+                            <!-- --- MODIFIED (Req 1, 3): Added input-3d class --- -->
+                            <input type="text" name="Name" id="fullName" required class="input-3d mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-10 px-3">
+                            <!-- --- NEW (Req 6): Added note for Name --- -->
+                            <p class="mt-1 text-xs text-gray-500">Enter full name as: First Name, Middle Name, Surname.</p>
+                        </div>
+                        <div>
+                            <label for="prnNumber" class="block text-sm font-medium text-gray-700">PRN No</label>
+                            <!-- --- MODIFIED (Req 1, 3): Added input-3d class --- -->
+                            <input type="text" name="PRNNo" id="prnNumber" required class="input-3d mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-10 px-3">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700">Email ID</label>
+                            <!-- --- MODIFIED (Req 1, 3): Added input-3d class --- -->
+                            <input type="email" name="EmailID" id="email" required class="input-3d mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-10 px-3">
+                            <!-- --- NEW (Req 4): Added note for Email --- -->
+                            <p class="mt-1 text-xs text-gray-500">Enter correct email ID. A confirmation receipt may be mailed to this address.</p>
+                        </div>
+                        <div>
+                            <label for="phone" class="block text-sm font-medium text-gray-700">Mobile No</label>
+                            <!-- --- MODIFIED (Req 1, 3): Added input-3d class --- -->
+                            <input type="tel" name="MobileNo" id="phone" required class="input-3d mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-10 px-3">
+                        </div>
+                    </fieldset>
+
+                   <!-- Academic Details Section -->
+                    <fieldset class="space-y-6">
+                        <div>
+                            <label for="branch" class="block text-sm font-medium text-gray-700">Branch</label>
+                            <!-- --- REBUILT: Branch list is now complete and correct. --- -->
+                            <select id="branch" name="Branch" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-10 px-3">
+                                <option value="" disabled selected>Select your branch</option>
+                                <option value="11: Bachelor of Technology  in Aeronautical Engineering">11: Bachelor of Technology  in Aeronautical Engineering</option>
+                                <option value="12: Bachelor of Technology  in Artificial Intelligence & Machine Learning">12: Bachelor of Technology  in Artificial Intelligence & Machine Learning</option>
+                                <option value="12: Bachelor of Technology in Civil Engineering">12: Bachelor of Technology in Civil Engineering</option>
+                                <option value="14: Bachelor of Technology in Computer Science Engineering">14: Bachelor of Technology in Computer Science Engineering</option>
+                                <option value="15: Bachelor of Technology in Electronics & Communication Engineering">15: Bachelor of Technology in Electronics & Communication Engineering</option>
+                                <option value="16: Bachelor of Computer Application">16: Bachelor of Computer Application</option>
+                                <option value="22:Bachelor of  Science  in Physics">22:Bachelor of  Science  in Physics</option>
+                                <option value="25: Bachelor of Science in Food Science & Technology">25: Bachelor of Science in Food Science & Technology</option>
+                                <option value="26: Bachelor of Science in Medical Laboratory Technology">26: Bachelor of Science in Medical Laboratory Technology</option>
+                                <option value="27: Bachelor of Commerce">27: Bachelor of Commerce</option>
+                                <option value="28: Bachelor of Business Administration">28: Bachelor of Business Administration</option>
+                                <option value="29:Bachelor of Arts">29:Bachelor of Arts</option>
+                                <option value="30:Bachelor of Arts  in Journalism & Mass Communication">30:Bachelor of Arts  in Journalism & Mass Communication</option>
+                                <option value="40:Bachelor of Science Biotechnology">40:Bachelor of Science Biotechnology</option>
+                                <option value="59:Master of Science in Physics">59:Master of Science in Physics</option>
+                                <option value="60:Master of Science Chemistry">60:Master of Science Chemistry</option>
+                                <option value="67:M. Tech Civil Engineering(Construction Enggineering & Managemant)">67:M. Tech Civil Engineering(Construction Enggineering & Managemant)</option>
+                                <option value="68:M. Tech Civil Engineering(Structural Enggineering)">68:M. Tech Civil Engineering(Structural Enggineering)</option>
+                                <option value="69:M. Tech Aerospace Engineering">69:M. Tech Aerospace Engineering</option>
+                                <option value="70:M. Tech Artifical Intelligence and Data Science">70:M. Tech Artifical Intelligence and Data Science</option>
+                                <option value="71:M. Tech Electronics Engineerring (Embedded Systems)">71:M. Tech Electronics Engineerring (Embedded Systems)</option>
+                                <option value="72: Master of Computer Applications (MCA)">72: Master of Computer Applications (MCA)</option>
+                                <option value="73: Master of Business Administration (MBA)">73: Master of Business Administration (MBA)</option>
+                                <option value="74:BA LLB">74:BA LLB</option>
+                                <option value="75:BBA LLB">75:BBA LLB</option>
+                                <option value="76:LLB">76:LLB</option>
+                                <option value="Bachelor of Design">Bachelor of Design</option>
+                                <option value="Master of Business Administration in Disaster Management">Master of Business Administration in Disaster Management</option>
+                            </select>
+                        </div>
+
+
+                        <!-- Semester and Total Courses on next line -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="semester" class="block text-sm font-medium text-gray-700">Semester</label>
+                                <!-- --- MODIFIED (Req 1, 3): Added input-3d class --- -->
+                                <select id="semester" name="Semester" required class="input-3d mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-10 px-3">
+                                    <option value="" disabled selected>Select branch first</option>
+                                    <!-- Options will be populated by JavaScript -->
+                                </select>
+                                <!-- --- NEW (Req 5): Added note for Semester --- -->
+                                <p class="mt-1 text-xs text-gray-500">Select each semester one by one for which you have backlog courses.</p>
+                            </div>
+                            <div>
+                                <label for="totalCourses" class="block text-sm font-medium text-gray-700">Total Courses</label>
+                                <!-- --- MODIFIED (Req 1, 3): Added input-3d class --- -->
+                                <input type="number" name="TotalCourses" id="totalCourses" class="input-3d mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-10 px-3" disabled>
+                                <p class="text-xs text-gray-500 mt-1">This field is updated by the summary.</p>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- Dynamic Courses Section -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Courses for Examination</label>
+                        <p class="text-sm text-gray-500">Select a branch and semester to see courses. You can switch semesters and your selections will be saved.</p>
+                        <div id="coursesContainer" class="mt-2 space-y-4 p-4 border border-gray-200 rounded-md bg-gray-50 min-h-[150px]">
+                            <p id="coursesPlaceholder" class="text-sm text-gray-500">Please select your branch and semester first.</p>
+                            <!-- Course groups will be dynamically added here -->
+                        </div>
+                    </div>
+                    
+                    <!-- Selected Courses Summary -->
+                    <div id="summarySection">
+                        <label class="block text-sm font-medium text-gray-700">Selected Courses Summary</label>
+                        <div id="summaryContainer" class="mt-2 space-y-2 p-4 border border-blue-200 rounded-md bg-blue-50 min-h-[100px]">
+                            <p class="text-sm text-gray-500">No courses selected yet.</p>
+                        </div>
+                    </div>
+
+                    <!-- --- NEW (Req 3): Total Fees Section --- -->
+                    <div id="feesSection">
+                        <label class="block text-sm font-medium text-gray-700">Total Estimated Fees</label>
+                        <div id="feesContainer" class="mt-2 p-4 border border-green-300 rounded-md bg-green-50">
+                            <p id="feesDisplay" class="text-lg font-semibold text-green-800">₹ 0.00</p>
+                            <p class="text-xs text-gray-500">Based on ₹ 300.00 per course.</p>
+                        </div>
+                        <!-- Hidden input to send fees data to Google Sheet -->
+                        <input type="hidden" name="Fees" id="hiddenFees" value="₹ 0.00">
+                    </div>
+
+                    <!-- --- NEW: Declaration Checkbox --- -->
+                    <fieldset class="space-y-2">
+                        <div class="relative flex items-start">
+                            <div class="flex h-5 items-center">
+                                <input id="declarationCheckbox" name="declaration" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                            </div>
+                            <div class="ml-3 text-sm">
+                                <label for="declarationCheckbox" class="font-medium text-gray-700">I declare all information is correct. I am responsible for any mistakes.</label>
+                            </div>
+                        </div>
+                    </fieldset>
+                    
+                    <!-- Submission Button -->
+                    <div>
+                        <!-- --- MODIFIED: Added disabled attribute --- -->
+                        <button type="submit" id="submitButton" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed" disabled>
+                            <span id="buttonText">Submit Application</span>
+                            <div id="buttonSpinner" class="hidden spinner"></div>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+       document.addEventListener('DOMContentLoaded', () => {
+            // --- CONFIGURATION ---
+            
+            // This is your Google Apps Script URL
+            const formScriptURL = 'https://script.google.com/macros/s/AKfycbzc-UsklBLnOqLo8EgHGMMTg2xxA67mNunkf1iJazePTCy0JKLEHxyGHf-JS6E8VIjXJg/exec';
+
+            // --- COURSE DATA ---
+            // --- REBUILT: This object is now fully populated from your CSV file. ---
+            const coursesByBranchAndSem = {
+    "11: Bachelor of Technology  in Aeronautical Engineering": {
+        "I & II": [
+            {
+                "name": "Constitution of India",
+                "code": "U03VE001"
+            },
+            {
+                "name": "Indian Science, Engineering and Technology (Past, Present and Future)",
+                "code": "U01IK001"
+            },
+            {
+                "name": "Applied Mathematics I",
+                "code": "U01BS101"
+            },
+            {
+                "name": "Professional Communication",
+                "code": "U03AE001"
+            },
+            {
+                "name": "Applied Physics",
+                "code": "U01BS002"
+            },
+            {
+                "name": "Applied Chemistry",
+                "code": "U01BS001"
+            },
+            {
+                "name": "Engineering Graphics",
+                "code": "U01ES002"
+            },
+            {
+                "name": "Engineering Mechanics",
+                "code": "U01ES001"
+            },
+            {
+                "name": "Basic Civil and Mechanical Engineering",
+                "code": "U01ES003"
+            },
+            {
+                "name": "Basic Electrical and Electronics Engineering",
+                "code": "U01ES004"
+            },
+            {
+                "name": "Applied Mathematics II",
+                "code": "U01BS201"
+            }
+        ],
+        "III": [
+            {
+                "name": "Engineering Economics",
+                "code": "U02EM001"
+            },
+            {
+                "name": "Creativity & Innovation",
+                "code": "U31OE011"
+            },
+            {
+                "name": "Semiconductor Devices",
+                "code": "U15OE011"
+            },
+            {
+                "name": "Basics of Marketing",
+                "code": "U28OE011"
+            },
+            {
+                "name": "Programing in Python",
+                "code": "U12MM011"
+            },
+            {
+                "name": "Environmental Science",
+                "code": "U01VE003"
+            },
+            {
+                "name": "Elements of Aeronautical Engineering",
+                "code": "U11PC301"
+            },
+            {
+                "name": "Aero Thermodynamics",
+                "code": "U11PC302"
+            },
+            {
+                "name": "Fluid Mechanics",
+                "code": "U11PC303"
+            }
+        ],
+        "IV": [
+            {
+                "name": "Universal Human Values-II ",
+                "code": "U03VE004"
+            },
+            {
+                "name": "Engineering Management",
+                "code": "U02EM002"
+            },
+            {
+                "name": "Future of India's Space Exploration (Open Elective II)",
+                "code": "U11OE022"
+            },
+            {
+                "name": "Data Structure (Multidisciplinary Minor II)",
+                "code": "U12MM012"
+            },
+            {
+                "name": "Low Speed Aerodynamics",
+                "code": "U11PC401"
+            },
+            {
+                "name": "Air Breathing Propulsion",
+                "code": "U11PC402"
+            },
+            {
+                "name": "Mechanics of Materials",
+                "code": "U11PC403"
+            }
+        ]
+    },
+    "12: Bachelor of Technology in Civil Engineering": {
+        "I & II": [
+            {
+                "name": "Indian Science, Engineering and Technology (Past, Present and Future)",
+                "code": "U01IK001"
+            },
+            {
+                "name": "Constitution of India",
+                "code": "U03VE001"
+            },
+            {
+                "name": "Applied Mathematics I",
+                "code": "U01BS101"
+            },
+            {
+                "name": "Professional Communication",
+                "code": "U03AE001"
+            },
+            {
+                "name": "Applied Physics",
+                "code": "U01BS002"
+            },
+            {
+                "name": "Applied Chemistry",
+                "code": "U01BS001"
+            },
+            {
+                "name": "Engineering Graphics",
+                "code": "U01ES002"
+            },
+            {
+                "name": "Engineering Mechanics",
+                "code": "U01ES001"
+            },
+            {
+                "name": "Basic Civil and Mechanical Engineering",
+                "code": "U01ES003"
+            },
+            {
+                "name": "Basic Electrical and Electronics Engineering",
+                "code": "U01ES004"
+            },
+            {
+                "name": "Applied Mathematics II",
+                "code": "U01BS201"
+            }
+        ],
+        "III": [
+            {
+                "name": "Engineering Economics",
+                "code": "U02EM001"
+            },
+            {
+                "name": "Basics of Marketing",
+                "code": "U28OE011"
+            },
+            {
+                "name": "Introduction to Drones",
+                "code": "U11MM031"
+            },
+            {
+                "name": "Environmental Science",
+                "code": "U01VE003"
+            },
+            {
+                "name": "Structural Mechanics ",
+                "code": "U13PC301"
+            },
+            {
+                "name": "Building  Design and Drawing  ",
+                "code": "U13PC302"
+            },
+            {
+                "name": "Engineering Surveying",
+                "code": "U13PC303"
+            }
+        ],
+        "IV": [
+            {
+                "name": "Universal Human Values II",
+                "code": "U03VE004"
+            },
+            {
+                "name": "Engineering Management ",
+                "code": "U02EM002"
+            },
+            {
+                "name": "Tourism and Travel Management (Open Elective II)",
+                "code": "U29OE021"
+            },
+            {
+                "name": "Theory of Drones  (Multidisciplinary Minor II)",
+                "code": "U11MM032"
+            },
+            {
+                "name": "Fluid Mechanics",
+                "code": "U13PC401"
+            },
+            {
+                "name": "Geotechnical Engineering",
+                "code": "U13PC402"
+            },
+            {
+                "name": "Theory of Structure",
+                "code": "U13PC403"
+            }
+        ]
+    },
+    "15: Bachelor of Technology in Electronics & Communication Engineering": {
+        "I & II": [
+            {
+                "name": "Indian Science, Engineering and Technology (Past, Present and Future)",
+                "code": "U01IK001"
+            },
+            {
+                "name": "Constitution of India",
+                "code": "U03VE001"
+            },
+            {
+                "name": "Professional Communication",
+                "code": "U03AE001"
+            },
+            {
+                "name": "Applied Mathematics I",
+                "code": "U01BS101"
+            },
+            {
+                "name": "Applied Physics",
+                "code": "U01BS002"
+            },
+            {
+                "name": "Applied Chemistry",
+                "code": "U01BS001"
+            },
+            {
+                "name": "Engineering Graphics",
+                "code": "U01ES002"
+            },
+            {
+                "name": "Engineering Mechanics",
+                "code": "U01ES001"
+            },
+            {
+                "name": "Basic Civil and Mechanical Engineering",
+                "code": "U01ES003"
+            },
+            {
+                "name": "Basic Electrical and Electronics Engineering",
+                "code": "U01ES004"
+            },
+            {
+                "name": "Applied Mathematics II",
+                "code": "U01BS201"
+            }
+        ],
+        "III": [
+            {
+                "name": "Engineering Economics",
+                "code": "U02EM001"
+            },
+            {
+                "name": "Basic Aeronautical Engineering",
+                "code": "U11OE011"
+            },
+            {
+                "name": "Programing in Python",
+                "code": "U12MM011"
+            },
+            {
+                "name": "Environmental Science",
+                "code": "U01VE003"
+            },
+            {
+                "name": "Analog Circuit Design",
+                "code": "U15PC301"
+            },
+            {
+                "name": "Digital Circuit Design",
+                "code": "U15PC302"
+            },
+            {
+                "name": "Network Analysis and Synthesis",
+                "code": "U15PC303"
+            }
+        ],
+        "IV": [
+            {
+                "name": "Universal Human Values II",
+                "code": "U03VE004"
+            },
+            {
+                "name": "Engineering Management",
+                "code": "U02EM002"
+            },
+            {
+                "name": "Future of India's Space Exploration (Open Elective II)",
+                "code": "U11OE022"
+            },
+            {
+                "name": "Data Structure (Multidisciplinary Minor II)",
+                "code": "U12MM012"
+            },
+            {
+                "name": "Electromagnetic Theory",
+                "code": "U15PC401"
+            },
+            {
+                "name": "Microcontrollers",
+                "code": "U15PC402"
+            },
+            {
+                "name": "Signals And Systems",
+                "code": "U15PC403"
+            }
+        ]
+    },
+    "14: Bachelor of Technology in Computer Science Engineering": {
+        "I & II": [
+            {
+                "name": "Ancient Indian logic fom the view point of Computer Science and Engineering",
+                "code": "U01IK002"
+            },
+            {
+                "name": "Constitution of India",
+                "code": "U03VE001"
+            },
+            {
+                "name": "Professional Communication",
+                "code": "U03AE001"
+            },
+            {
+                "name": "Applied Mathematics I",
+                "code": "U01BS101"
+            },
+            {
+                "name": "Microprocessors and Microcontrollers",
+                "code": "UCS202"
+            },
+            {
+                "name": "Applied Physics",
+                "code": "U01BS002"
+            },
+            {
+                "name": "Applied Chemistry",
+                "code": "U01BS001"
+            },
+            {
+                "name": "Engineering Graphics",
+                "code": "U01ES002"
+            },
+            {
+                "name": "Engineering Mechanics",
+                "code": "U01ES001"
+            },
+            {
+                "name": "Data Communications and Computer Networks",
+                "code": "UCS203"
+            },
+            {
+                "name": "Basic Civil and Mechanical Engineering",
+                "code": "U01ES003"
+            },
+            {
+                "name": "Basic Electrical and Electronics Engineering",
+                "code": "U01ES004"
+            },
+            {
+                "name": "Applied Mathematics II",
+                "code": "U01BS201"
+            }
+        ],
+        "III": [
+            {
+                "name": "Engineering Economics",
+                "code": "U02EM001"
+            },
+            {
+                "name": "Origami",
+                "code": "U04OE011"
+            },
+            {
+                "name": "Basic Aeronautical Engineering",
+                "code": "U11OE011"
+            },
+            {
+                "name": "Semiconductor Devices",
+                "code": "U15OE011"
+            },
+            {
+                "name": "Basics of Marketing",
+                "code": "U28OE011"
+            },
+            {
+                "name": "Elements of Satellite Technology",
+                "code": "U11MM021"
+            },
+            {
+                "name": "Introduction to Drones",
+                "code": "U11MM031"
+            },
+            {
+                "name": "Electronic Communication System",
+                "code": "U15MM021"
+            },
+            {
+                "name": "Environmental Science",
+                "code": "U01VE003"
+            },
+            {
+                "name": "Statistics and Numerical Techniques",
+                "code": "U14BS301"
+            },
+            {
+                "name": "Computer Organization & Architecture",
+                "code": "U14PC302"
+            },
+            {
+                "name": "Object Oriented Programming using C++",
+                "code": "U14PC303"
+            }
+        ],
+        "IV": [
+            {
+                "name": "Universal Human Values II",
+                "code": "U03VE004"
+            },
+            {
+                "name": "Engineering Management",
+                "code": "U02EM002"
+            },
+            {
+                "name": "Electromagnetic waves and antennas (Multidisciplinary Minor II)",
+                "code": "U15MM022"
+            },
+            {
+                "name": "Theory of Drones (Multidisciplinary Minor II)",
+                "code": "U11MM032"
+            },
+            {
+                "name": "Spacecraft Communication Systems  (Multidisciplinary Minor II)",
+                "code": "U11MM022"
+            },
+            {
+                "name": "Data Structure",
+                "code": "U14PC401"
+            },
+            {
+                "name": "Operating System",
+                "code": "U14PC402"
+            },
+            {
+                "name": "Database Management System",
+                "code": "U14PC403"
+            }
+        ]
+    },
+    "12: Bachelor of Technology  in Artificial Intelligence & Machine Learning": {
+        "I & II": [
+            {
+                "name": "Ancient Indian Knowledge fom the view point of Computer Science and Engineering",
+                "code": "U01IK002"
+            },
+            {
+                "name": "Constitution of India",
+                "code": "U03VE001"
+            },
+            {
+                "name": "Professional Communication",
+                "code": "U03AE001"
+            },
+            {
+                "name": "Applied Mathematics I",
+                "code": "U01BS101"
+            },
+            {
+                "name": "Microprocessors and Microcontrollers",
+                "code": "UAM202"
+            },
+            {
+                "name": "Applied Physics",
+                "code": "U01BS002"
+            },
+            {
+                "name": "Applied Chemistry",
+                "code": "U01BS001"
+            },
+            {
+                "name": "Data Communications and Computer Networks",
+                "code": "UAM203"
+            },
+            {
+                "name": "Engineering Graphics",
+                "code": "U01ES002"
+            },
+            {
+                "name": "Engineering Mechanics",
+                "code": "U01ES001"
+            },
+            {
+                "name": "Basic Civil and Mechanical Engineering",
+                "code": "U01ES003"
+            },
+            {
+                "name": "Basic Electrical and Electronics Engineering",
+                "code": "U01ES004"
+            },
+            {
+                "name": "Applied Mathematics II",
+                "code": "U01BS201"
+            }
+        ],
+        "III": [
+            {
+                "name": "Engineering Economics",
+                "code": "U02EM001"
+            },
+            {
+                "name": "Origami",
+                "code": "U04OE011"
+            },
+            {
+                "name": "Basic Aeronautical Engineering",
+                "code": "U11OE011"
+            },
+            {
+                "name": "Semiconductor Devices",
+                "code": "U15OE011"
+            },
+            {
+                "name": "Basics of Marketing",
+                "code": "U28OE011"
+            },
+            {
+                "name": "Creativity & Innovation",
+                "code": "U31OE011"
+            },
+            {
+                "name": "Elements of Satellite Technology",
+                "code": "U11MM021"
+            },
+            {
+                "name": "Introduction to Drones",
+                "code": "U11MM031"
+            },
+            {
+                "name": "Electronic Communication System",
+                "code": "U15MM021"
+            },
+            {
+                "name": "Environmental Science",
+                "code": "U01VE003"
+            },
+            {
+                "name": "Fuzzy Mathematics & Statistics",
+                "code": "U12PC301"
+            },
+            {
+                "name": "Digital System Design",
+                "code": "AMT1304"
+            },
+            {
+                "name": "Introduction to AI",
+                "code": "U12PC302"
+            },
+            {
+                "name": "Operating System",
+                "code": "U12PC303"
+            }
+        ],
+        "IV": [
+            {
+                "name": "Universal Human Values II",
+                "code": "U03VE004"
+            },
+            {
+                "name": "Engineering Management",
+                "code": "U02EM002"
+            },
+            {
+                "name": "Calligraphy (Open Elective II)",
+                "code": "U04OE021"
+            },
+            {
+                "name": "Tourism and Travel Management (Open Elective II)",
+                "code": "U29OE021"
+            },
+            {
+                "name": "Vlogging (Open Elective II)",
+                "code": "U30OE021"
+            },
+            {
+                "name": "Theory of Drones (Multidisciplinary Minor II)",
+                "code": "U11MM032"
+            },
+            {
+                "name": "Electromagnetic Waves and Antennas (Multidisciplinary Minor II)",
+                "code": "U15MM022"
+            },
+            {
+                "name": "Spacecraft Communication Systems\n (Multidisciplinary Minor II)",
+                "code": "U11MM022"
+            },
+            {
+                "name": "Numerical Methods & Advanced Statistics",
+                "code": "U12PC401"
+            },
+            {
+                "name": "Data Structure using python",
+                "code": "U12PC402"
+            },
+            {
+                "name": "Database Management System",
+                "code": "U12PC403"
+            }
+        ]
+    },
+    "72: Master of Computer Applications (MCA)": {
+        "I": [
+            {
+                "name": "Principles of Operating Systems",
+                "code": "P72PC101"
+            },
+            {
+                "name": "Intellectual Property Rights",
+                "code": "P76OE011"
+            },
+            {
+                "name": "Data Structures using C++",
+                "code": "P72PC102"
+            },
+            {
+                "name": "Advance Database Concepts",
+                "code": "P72PC103"
+            },
+            {
+                "name": "Cloud Computing",
+                "code": "P72PE103"
+            },
+            {
+                "name": "Research Methodology",
+                "code": "P01RM101"
+            }
+        ],
+        "II": [
+            {
+                "name": "Research Publications and Ethics",
+                "code": "P01RM201"
+            },
+            {
+                "name": "Leadership and Team Management (Open/Multidisciplinary Elective II ",
+                "code": "P73OE201"
+            },
+            {
+                "name": "Application Development using Java",
+                "code": "P72PC201"
+            },
+            {
+                "name": "Unified Modeling Language",
+                "code": "P72PC202"
+            },
+            {
+                "name": "Computer Network and Security",
+                "code": "P72PC203"
+            },
+            {
+                "name": "Block Chain Technology",
+                "code": "P72PE203"
+            }
+        ]
+    },
+    "25: Bachelor of Science in Food Science & Technology": {
+        "I": [
+            {
+                "name": "Constitution of India",
+                "code": "U03VE001"
+            },
+            {
+                "name": "English",
+                "code": "U03AE002"
+            },
+            {
+                "name": "General Biology",
+                "code": "U25PC101"
+            },
+            {
+                "name": "General Chemistry",
+                "code": "U21PC103"
+            },
+            {
+                "name": "Indian Traditional Foods",
+                "code": "U25IK101"
+            },
+            {
+                "name": "Origami (Open Elective I)",
+                "code": "U04OE011"
+            }
+        ],
+        "II": [
+            {
+                "name": "Chemistry for Biologist ",
+                "code": "U21PC203"
+            },
+            {
+                "name": "Professional Communication",
+                "code": "U03AE001"
+            },
+            {
+                "name": "Basics of Hematology",
+                "code": "U26MM011"
+            },
+            {
+                "name": "Food Microbiology",
+                "code": "U25PC201"
+            },
+            {
+                "name": "Environmental Science",
+                "code": "U01VE003"
+            },
+            {
+                "name": "Caligraphy (Open Elective-II)",
+                "code": "U04OE021"
+            },
+            {
+                "name": "Food Processing Technology",
+                "code": "U25PC202"
+            }
+        ],
+        "III": [
+            {
+                "name": "Modern Indian Language: Hindi",
+                "code": "U03AE003"
+            },
+            {
+                "name": "Modern Indian Language: Sanskrit",
+                "code": "U03AE004"
+            },
+            {
+                "name": "Modern Indian Language: Marathi",
+                "code": "U03AE005"
+            },
+            {
+                "name": "Food Analysis",
+                "code": "U25PC301"
+            },
+            {
+                "name": "Green Chemistry :Sustainable\n Development And Climate\n Change (Open Elective-III)",
+                "code": "U21OE031"
+            },
+            {
+                "name": "Milk and Milk Products",
+                "code": "U25PC302"
+            },
+            {
+                "name": "Fundamentals in Blood Banking\n (Multidisciplinary Minor-II)",
+                "code": "U26MM302"
+            },
+            {
+                "name": "Human Nutrition",
+                "code": "U25PC303"
+            }
+        ]
+    },
+    "60:Master of Science Chemistry": {
+        "I": [
+            {
+                "name": "Structural Organic Chemistry",
+                "code": "P61PC101"
+            },
+            {
+                "name": "Separation Techniques",
+                "code": "P61PC102"
+            },
+            {
+                "name": "Chemistry of Main Group Elements",
+                "code": "P61PC103"
+            },
+            {
+                "name": "Chemical Kinetics and Thermodynamics",
+                "code": "P61PE101"
+            },
+            {
+                "name": "Research Methodology",
+                "code": "P01RM001"
+            }
+        ],
+        "II": [
+            {
+                "name": "Advanced Organic Chemistry",
+                "code": "P60PC201"
+            },
+            {
+                "name": "Chemistry of Transition Elements",
+                "code": "P60PC202"
+            },
+            {
+                "name": "Molecular Spectroscopy and Electrochemistry",
+                "code": "P60PE201"
+            },
+            {
+                "name": "Advanced Organic Chemistry",
+                "code": "P61PC201"
+            },
+            {
+                "name": "Chemistry of Transition  Elements",
+                "code": "P61PC202"
+            },
+            {
+                "name": "Molecular Spectroscopy and  Electrochemistry",
+                "code": "P61PE201"
+            }
+        ],
+        "III": [
+            {
+                "name": "Stereochemistry",
+                "code": "P61PC301"
+            },
+            {
+                "name": "Advanced Spectroscopic Methods",
+                "code": "P61PC302"
+            },
+            {
+                "name": "Advanced Synthetic Methods and Developments in\nOrganic Chemistry",
+                "code": "P61PC303"
+            },
+            {
+                "name": "Green Chemistry and Sustainability",
+                "code": "P61PE301"
+            },
+            {
+                "name": "Techniques in Analytical Chemistry",
+                "code": "P61PC311"
+            },
+            {
+                "name": "Advanced Spectroscopic Methods",
+                "code": "P61PC302"
+            },
+            {
+                "name": "Electrochemical Methods of Analysis",
+                "code": "P61PC312"
+            },
+            {
+                "name": "Green Chemistry and Sustainability",
+                "code": "P61PE301"
+            }
+        ],
+        "IV": [
+            {
+                "name": "Pericyclic Reactions and Photochemistry",
+                "code": "P61PC401"
+            },
+            {
+                "name": "Natural Products",
+                "code": "P61PC402"
+            },
+            {
+                "name": "Heterocyclic Chemistry",
+                "code": "P61PC403"
+            },
+            {
+                "name": "Analytical Methods in Chemical Industries \n(Program Elective-IV )",
+                "code": "P61PE411"
+            }
+        ]
+    },
+    "76:LLB": {
+        "I": [
+            {
+                "name": "Law of Contract-I (General principles of Contract)",
+                "code": "U76PC101"
+            },
+            {
+                "name": "Law of Torts (Motor Vehicles Ct & Consumer Protection Act,1986)",
+                "code": "U76PC102"
+            },
+            {
+                "name": "Environmental Laws",
+                "code": "U76PC103"
+            },
+            {
+                "name": "Property Law",
+                "code": "U76PC104"
+            },
+            {
+                "name": "Law of Equity & Trust",
+                "code": "U76PE101"
+            },
+            {
+                "name": "Probation & Parole",
+                "code": "U76PE102"
+            },
+            {
+                "name": "Bio Diversity protection Law",
+                "code": "U76PE103"
+            }
+        ],
+        "II": [
+            {
+                "name": "Law  of Contract – II (Specific Contracts)",
+                "code": "U76PC201"
+            },
+            {
+                "name": "Jurisprudence (Legal Method ,Indian Legal System and \nBasic theory of Law)",
+                "code": "U76PC202"
+            },
+            {
+                "name": "Public International Law",
+                "code": "U76PC203"
+            },
+            {
+                "name": "Principles of Taxation Law ",
+                "code": "U76PC204"
+            },
+            {
+                "name": "Law of Carriage (Program Elective)",
+                "code": "U76PE201"
+            },
+            {
+                "name": "Cyber Laws (Program Elective)",
+                "code": "U76PE202"
+            },
+            {
+                "name": "Private International Law (Program Elective)",
+                "code": "U76PE203"
+            }
+        ]
+    },
+    "74:BA LLB": {
+        "I": [
+            {
+                "name": "Law of Contract-I (General principles of Contract)",
+                "code": "U74PC101"
+            },
+            {
+                "name": "Law of Torts (Motor Vehicles Ct & Consumer \nProtection Act,1986)",
+                "code": "U74PC102"
+            },
+            {
+                "name": "History I – Indian History",
+                "code": "U74NL101"
+            },
+            {
+                "name": "Political Science I – Basic Concepts of Political Science",
+                "code": "U74NL102"
+            },
+            {
+                "name": "Economics I- General Principles of Economics",
+                "code": "U74NL103"
+            },
+            {
+                "name": "English Paper I: Law & Language ",
+                "code": "U74LL101"
+            }
+        ],
+        "II": [
+            {
+                "name": "Law  of Contract – II (Specific Contracts)",
+                "code": "U74PC201"
+            },
+            {
+                "name": "Jurisprudence",
+                "code": "U74PC202"
+            },
+            {
+                "name": "History II – Legal History of Modern India",
+                "code": "U74NL201"
+            },
+            {
+                "name": "Political Science II – State & Political Obligations",
+                "code": "U74NL202"
+            },
+            {
+                "name": "Economics II – Macro Economics, policies and Practice",
+                "code": "U74NL203"
+            },
+            {
+                "name": "English Paper II: Legal Professional\n Communication Skills",
+                "code": "U74LL201"
+            }
+        ]
+    },
+    "75:BBA LLB": {
+        "I": [
+            {
+                "name": "Law of Contract-I (General principles of Contract)",
+                "code": "U75PC101"
+            },
+            {
+                "name": "Law of Torts (Motor Vehicles Ct & Consumer \nProtection Act,1986)",
+                "code": "U75PC102"
+            },
+            {
+                "name": "Management Principles & Practice Paper I- \nIntroduction to Business Management ",
+                "code": "U75NL101"
+            },
+            {
+                "name": "Business Economics Paper I-Micro Economics ",
+                "code": "U75NL102"
+            },
+            {
+                "name": "Financial Management Paper I- Accounting Principle \nand Practice ",
+                "code": "U75NL103"
+            },
+            {
+                "name": "Common English – 1",
+                "code": "U75LL101"
+            }
+        ],
+        "II": [
+            {
+                "name": "Law  of Contract – II (Specific Contracts)",
+                "code": "U75PC201"
+            },
+            {
+                "name": "Jurisprudence",
+                "code": "U75PC202"
+            },
+            {
+                "name": "Management Principles and Practice Paper II- \nOrganizational Behavior Behavioral Psychology",
+                "code": "U75NL201"
+            },
+            {
+                "name": "Business Economics Paper II-Micro Economics",
+                "code": "U75NL202"
+            },
+            {
+                "name": "Financial Management Paper II- Cost Accounting ",
+                "code": "U75NL203"
+            },
+            {
+                "name": "English Paper II: Legal Professional Communication Skills",
+                "code": "U75LL201"
+            }
+        ]
+    },
+    "26: Bachelor of Science in Medical Laboratory Technology": {
+        "I": [
+            {
+                "name": "Constitution of India",
+                "code": "U03VE001"
+            },
+            {
+                "name": "Origami (Open Elective I)",
+                "code": "U04OE011"
+            },
+            {
+                "name": "English",
+                "code": "U03AE002"
+            },
+            {
+                "name": "Human Anatomy and Physiology-I",
+                "code": "U26PC105"
+            },
+            {
+                "name": "General  Chemistry",
+                "code": "U21PC103"
+            },
+            {
+                "name": "Indian Medical Sciences",
+                "code": "U26IK101"
+            }
+        ],
+        "II": [
+            {
+                "name": "Chemistry for Biologists",
+                "code": "U21PC203"
+            },
+            {
+                "name": "Professional Communication",
+                "code": "U03AE001"
+            },
+            {
+                "name": "Fundamentals of Food\nTechnology (Multidisciplinary Minor-I)",
+                "code": "U25MM011"
+            },
+            {
+                "name": "Environment Science ",
+                "code": "U01VE003"
+            },
+            {
+                "name": "Caligraphy (Open Elective-II)",
+                "code": "U04OE021"
+            },
+            {
+                "name": "Human Anatomy and Physiology -II ",
+                "code": "U26PC205"
+            },
+            {
+                "name": "Human Anatomy-II",
+                "code": "U26PC201"
+            },
+            {
+                "name": "Professional Communication",
+                "code": "U03AE001"
+            },
+            {
+                "name": "Fundamentals of Food Technology",
+                "code": "U25MM011"
+            },
+            {
+                "name": "Environmental Science",
+                "code": "U01VE003"
+            },
+            {
+                "name": "Vlogging (Open Elective -II)",
+                "code": "U30OE021"
+            },
+            {
+                "name": "Human Physiology-II",
+                "code": "U26PC202"
+            }
+        ],
+        "III": [
+            {
+                "name": "Modern Indian Language – Hindi",
+                "code": "U03AE003"
+            },
+            {
+                "name": "Modern Indian Language – Sanskrit",
+                "code": "U03AE004"
+            },
+            {
+                "name": "Modern Indian Language – Marathi",
+                "code": "U03AE005"
+            },
+            {
+                "name": "Hematology",
+                "code": "U26PC301"
+            },
+            {
+                "name": "Image Design (Open Elective-III)",
+                "code": "U04OE031"
+            },
+            {
+                "name": "Fundamental Biochemistry",
+                "code": "U26PC302"
+            },
+            {
+                "name": "Fruit & Vegetable Technology (Multidisciplinary Minor-II)",
+                "code": "U25MM021"
+            }
+        ],
+        "IV": [
+            {
+                "name": "Clinical Biochemistry",
+                "code": "U26PC402"
+            },
+            {
+                "name": "Immunology",
+                "code": "U26PC403"
+            },
+            {
+                "name": "Folk Art Design (Open Elective-IV)",
+                "code": "U04OE041"
+            },
+            {
+                "name": "Milk and Milk Products (Multidisciplinary Minor-III)",
+                "code": "U25MM031"
+            },
+            {
+                "name": "Immunology and Serology",
+                "code": "U26PC401"
+            }
+        ]
+    },
+    "40:Bachelor of Science Biotechnology": {
+        "I": [
+            {
+                "name": "Generic Indian Knowledge System",
+                "code": "U40IK101"
+            },
+            {
+                "name": "Constituion of India",
+                "code": "U03VE001"
+            },
+            {
+                "name": "Origami (Open Elective I)",
+                "code": "U04OE011"
+            },
+            {
+                "name": "English",
+                "code": "U03AE002"
+            },
+            {
+                "name": "Fundamentals of Biotechnology",
+                "code": "U40PC101"
+            },
+            {
+                "name": "General  Chemistry",
+                "code": "U21PC103"
+            }
+        ],
+        "II": [
+            {
+                "name": "Fundamentals of Microbiology",
+                "code": "U40PC201"
+            },
+            {
+                "name": "Chemistry for Biologist",
+                "code": "U21PC203"
+            },
+            {
+                "name": "Basics in Hematology (Multidisciplinary Minor-I)",
+                "code": "U26MM201"
+            },
+            {
+                "name": "Caligraphy (Open Elective-II)",
+                "code": "U04OE021"
+            },
+            {
+                "name": "Professional Communication ",
+                "code": "U03AE001"
+            },
+            {
+                "name": "Environment Science ",
+                "code": "U01VE003"
+            }
+        ]
+    },
+    "22:Bachelor of  Science  in Physics": {
+        "I": [
+            {
+                "name": "Constitution of India",
+                "code": "U03VE001"
+            },
+            {
+                "name": "Evolution of Science and Technology in India and Rest of World",
+                "code": "U22IK101"
+            },
+            {
+                "name": "Software Models (Open Elective-I)",
+                "code": "U12OE011"
+            },
+            {
+                "name": "Professional Communication",
+                "code": "U03AE001"
+            },
+            {
+                "name": "Physics-I ",
+                "code": "U22PC101"
+            },
+            {
+                "name": "Chemistry-I",
+                "code": "U21PC101"
+            },
+            {
+                "name": "Mathematics-I",
+                "code": "U22PC102"
+            },
+            {
+                "name": "Botany-I",
+                "code": "U21PC102"
+            }
+        ],
+        "II": [
+            {
+                "name": "English ",
+                "code": "U03AE002"
+            },
+            {
+                "name": "Basics of Data Science",
+                "code": "U16MM011"
+            },
+            {
+                "name": "Fundamentals of Food Technology",
+                "code": "U25MM011"
+            },
+            {
+                "name": "Chemistry-II",
+                "code": "U21PC201"
+            },
+            {
+                "name": "Environmental Science",
+                "code": "U01VE003"
+            },
+            {
+                "name": "Python Programming (Open Elective -II)",
+                "code": "U16OE021"
+            },
+            {
+                "name": "Caligraphy (Open Elective-II)",
+                "code": "U04OE021"
+            },
+            {
+                "name": "Physics-II",
+                "code": "U22PC201"
+            },
+            {
+                "name": "Mathematics-II ",
+                "code": "U22PC202"
+            },
+            {
+                "name": "Botany-II",
+                "code": "U21PC202"
+            }
+        ],
+        "III": [
+            {
+                "name": "Modern Indian Language: Hindi",
+                "code": "U03AE003"
+            },
+            {
+                "name": "Modern Indian Language: Sanskrit",
+                "code": "U03AE004"
+            },
+            {
+                "name": "Modern Indian Language: Marathi",
+                "code": "U03AE005"
+            },
+            {
+                "name": "Physics-III",
+                "code": "U22PC301"
+            },
+            {
+                "name": "Image Design (Open Elective-III)",
+                "code": "U04OE031"
+            },
+            {
+                "name": "Statistical Computing (Multidisciplinary Minor-II)",
+                "code": "U16MM021"
+            },
+            {
+                "name": "Chemistry-III",
+                "code": "U21PC301"
+            }
+        ],
+        "IV": [
+            {
+                "name": "Physics-IV",
+                "code": "U22PC401"
+            },
+            {
+                "name": "Chemistry-IV",
+                "code": "U21PC401"
+            },
+            {
+                "name": "Photo Editing (Open Elective-IV)",
+                "code": "U30OE041"
+            },
+            {
+                "name": "Chemistry Toxicology (Open Elective-IV)",
+                "code": "U21PE401"
+            },
+            {
+                "name": "Python for Data Science (Multidisciplinary Minor-III)",
+                "code": "U16MM031"
+            },
+            {
+                "name": "Fundamental of Quantum Computing \n(Programme Elective-I)",
+                "code": "U22PE403"
+            }
+        ]
+    },
+    "27: Bachelor of Commerce": {
+        "I": [
+            {
+                "name": "Modern Indian Language: Hindi",
+                "code": "U03AE003"
+            },
+            {
+                "name": "Modern Indian Language: Sanskrit",
+                "code": "U03AE004"
+            },
+            {
+                "name": "Modern Indian Language: Marathi",
+                "code": "U03AE005"
+            },
+            {
+                "name": "Management Lessons from Bhagwat Gita",
+                "code": "U02IK101"
+            },
+            {
+                "name": "Constitution of India",
+                "code": "U03VE001"
+            },
+            {
+                "name": "Software Models (Open Elective-I)",
+                "code": "U12OE011"
+            },
+            {
+                "name": "Origami (Open Elective I)",
+                "code": "U04OE011"
+            },
+            {
+                "name": "English",
+                "code": "U03AE002"
+            },
+            {
+                "name": "Financial Accounting",
+                "code": "U27PC102"
+            },
+            {
+                "name": "Business Economics and Environment",
+                "code": "U27PC103"
+            },
+            {
+                "name": "Business Organization and Management",
+                "code": "U27PC101"
+            },
+            {
+                "name": "Financial Markets and Institutions",
+                "code": "U27SE101"
+            }
+        ],
+        "II": [
+            {
+                "name": "Professional Communication",
+                "code": "U03AE001"
+            },
+            {
+                "name": "Creativity and Innovation in Business \n(Multidiscilinary Minor I)",
+                "code": "U02MM031"
+            },
+            {
+                "name": "Social Media for Business Growth",
+                "code": "U02MM041"
+            },
+            {
+                "name": "Environmental Science",
+                "code": "U01VE003"
+            },
+            {
+                "name": "Open Elective -II",
+                "code": "UXXOE02X"
+            },
+            {
+                "name": "Business Law",
+                "code": "U27PC201"
+            },
+            {
+                "name": "Management Accounting",
+                "code": "U27SE201"
+            },
+            {
+                "name": "Business Statistics",
+                "code": "U27PC202"
+            }
+        ],
+        "III": [
+            {
+                "name": "Foreign Language(German)",
+                "code": "U02AE301"
+            },
+            {
+                "name": "Foreign Language(French)",
+                "code": "U02AE302"
+            },
+            {
+                "name": "Image Design (Open Elective-III)",
+                "code": "U04OE031"
+            },
+            {
+                "name": "Financial Management",
+                "code": "UBC301"
+            },
+            {
+                "name": "Financial Management",
+                "code": "U27PC301"
+            },
+            {
+                "name": "Business Planning (Mino II)",
+                "code": "U02MM032"
+            },
+            {
+                "name": "Company Law",
+                "code": "U27PC302"
+            },
+            {
+                "name": "Financial Markets and Institutions",
+                "code": "UBC304"
+            },
+            {
+                "name": "Banking and Insurance",
+                "code": "U27PC303"
+            },
+            {
+                "name": "Banking and Insurance",
+                "code": "UBC302"
+            }
+        ],
+        "IV": [
+            {
+                "name": "Universal Human Values-II",
+                "code": "U03VE004"
+            },
+            {
+                "name": "Corporate Accounting",
+                "code": "U27PC401"
+            },
+            {
+                "name": "Income Tax",
+                "code": "U27PC402"
+            },
+            {
+                "name": "Open Elective Course IV",
+                "code": "UXXOE04X"
+            },
+            {
+                "name": "New Venture Management (Minor III)",
+                "code": "U02MM033"
+            },
+            {
+                "name": "Business Research Methods",
+                "code": "U27SE401"
+            }
+        ]
+    },
+    "16: Bachelor of Computer Application": {
+        "I": [
+            {
+                "name": "Ancient Indian Knowledge System : Science and Technology Perspective",
+                "code": "U16IK101"
+            },
+            {
+                "name": "Semiconductor Devices (Open Elective I)",
+                "code": "U15OE011"
+            },
+            {
+                "name": "Origami (Open Elective I)",
+                "code": "U04OE011"
+            },
+            {
+                "name": "Creativity and Innovation (Open Elective I)",
+                "code": "U31OE011"
+            },
+            {
+                "name": "Professional Communication",
+                "code": "U03AE001"
+            },
+            {
+                "name": "Basics of Operating System",
+                "code": "U16PC101"
+            },
+            {
+                "name": "Enviromental Science",
+                "code": "U01VE003"
+            },
+            {
+                "name": "Fundamental of Computer Organization",
+                "code": "U16PC102"
+            }
+        ],
+        "II": [
+            {
+                "name": "Data Structures",
+                "code": "UCA201"
+            },
+            {
+                "name": "Constitution of India",
+                "code": "U03VE001"
+            },
+            {
+                "name": "English",
+                "code": "U03AE002"
+            },
+            {
+                "name": "Software Development",
+                "code": "U14MM061"
+            },
+            {
+                "name": "Air Pollution and Control",
+                "code": "U13MM061"
+            },
+            {
+                "name": "Programming in Python",
+                "code": "U12MM061"
+            },
+            {
+                "name": "Applied Mathematics",
+                "code": "U16PC201"
+            },
+            {
+                "name": "Vlogging (Open Elective-II)",
+                "code": "U30OE021"
+            },
+            {
+                "name": "Financial Literacy (Open Elective-II)",
+                "code": "U27OE021"
+            },
+            {
+                "name": "Database Management System",
+                "code": "U16PC202"
+            },
+            {
+                "name": "Software Engineering",
+                "code": "UCA203"
+            }
+        ],
+        "III": [
+            {
+                "name": "Modern Indian Language – Hindi",
+                "code": "U03AE003"
+            },
+            {
+                "name": "Modern Indian Language – Sanskrit",
+                "code": "U03AE004"
+            },
+            {
+                "name": "Modern Indian Language – Marathi",
+                "code": "U03AE005"
+            },
+            {
+                "name": "Sustainable Development and Climate Change\n (Open Elective III)",
+                "code": "U21OE031"
+            },
+            {
+                "name": "Food Quality Management (Open Elective III)",
+                "code": "U25OE031"
+            },
+            {
+                "name": "Image Design (Open Elective III)",
+                "code": "U04OE031"
+            },
+            {
+                "name": "English for Compitative Examinations \n(Open Elective III)",
+                "code": "U29OE031"
+            },
+            {
+                "name": "Core Java",
+                "code": "U16PC302"
+            },
+            {
+                "name": "Software Engineering",
+                "code": "U16PC301"
+            },
+            {
+                "name": "Statistical Computing (Multidisciplinary Minor II)",
+                "code": "U16MM021"
+            }
+        ],
+        "IV": [
+            {
+                "name": "Android Application Development",
+                "code": "U16PC401"
+            },
+            {
+                "name": "Universal Human Values II",
+                "code": "U03VE004"
+            },
+            {
+                "name": "Computer Network",
+                "code": "U16PC402"
+            },
+            {
+                "name": "Filk Art Design (Open Elective IV)",
+                "code": "U04OE041"
+            },
+            {
+                "name": "Photo Editing (Open Elective-IV)",
+                "code": "U30OE041"
+            },
+            {
+                "name": "Python for Data Scienc",
+                "code": "U16MM031"
+            },
+            {
+                "name": "Cyber Security Awareness",
+                "code": "U16MM033"
+            },
+            {
+                "name": "Fuzzy Logic",
+                "code": "U16MM035"
+            }
+        ]
+    },
+    "Master of Business Administration in Disaster Management": {
+        "I": [
+            {
+                "name": "Research Methodology",
+                "code": "P01RM101"
+            },
+            {
+                "name": "Risk Disaster & Resilience",
+                "code": "P77PC101"
+            },
+            {
+                "name": "International Public Health",
+                "code": "P77PC102"
+            },
+            {
+                "name": "Leadership & Management in Public Health",
+                "code": "P77PC103"
+            }
+        ]
+    },
+    "73: Master of Business Administration (MBA)": {
+        "I": [
+            {
+                "name": "Organizational Behaviour",
+                "code": "P73PC101"
+            },
+            {
+                "name": "BusinessEconomicsandEnvironment",
+                "code": "P73PC102"
+            },
+            {
+                "name": "Accounting For Managers",
+                "code": "P73PC103"
+            },
+            {
+                "name": "DecisionScience",
+                "code": "P73PC104"
+            },
+            {
+                "name": "MarketingManagement",
+                "code": "P73PC105"
+            },
+            {
+                "name": "ManagementInformationSystem",
+                "code": "P73SE101"
+            }
+        ],
+        "II": [
+            {
+                "name": "Human Resource Management",
+                "code": "P73PC201"
+            },
+            {
+                "name": "International Business Management",
+                "code": "P73PC202"
+            },
+            {
+                "name": "Financial Management",
+                "code": "P73PC203"
+            },
+            {
+                "name": "Operations Management",
+                "code": "P73PC204"
+            },
+            {
+                "name": "Business Research Methods",
+                "code": "P73PC205"
+            },
+            {
+                "name": "Business Analytics",
+                "code": "P73SE201"
+            }
+        ]
+    },
+    "28: Bachelor of Business Administration": {
+        "I": [
+            {
+                "name": "Modern Indian Language – Hindi",
+                "code": "U03AE003"
+            },
+            {
+                "name": "Modern Indian Language – Sanskrit",
+                "code": "U03AE004"
+            },
+            {
+                "name": "Modern Indian Language – Marathi",
+                "code": "U03AE005"
+            },
+            {
+                "name": "Constitution of India",
+                "code": "U03VE001"
+            },
+            {
+                "name": "Management Lessons from Bhagavad Gita",
+                "code": "U02IK101"
+            },
+            {
+                "name": "English",
+                "code": "U03AE002"
+            },
+            {
+                "name": "Management Concepts and Practices",
+                "code": "U28PC101"
+            },
+            {
+                "name": "Organizational Behaviour",
+                "code": "U28PC102"
+            },
+            {
+                "name": "Principles and Practices of Management",
+                "code": "U28PC105"
+            },
+            {
+                "name": "Financial Accounting",
+                "code": "U28PC106"
+            },
+            {
+                "name": "Business Statistics and Logic",
+                "code": "U28PC107"
+            },
+            {
+                "name": "Business Economics",
+                "code": "U28SE101"
+            }
+        ],
+        "II": [
+            {
+                "name": "Human Behaviour and Organization",
+                "code": "U28PC205"
+            },
+            {
+                "name": "Business Economics",
+                "code": "U28PC206"
+            },
+            {
+                "name": "Environmental Science",
+                "code": "U01VE003"
+            },
+            {
+                "name": "Marketing Management",
+                "code": "U28PC207"
+            },
+            {
+                "name": "QuantitativeTechniques for  Management",
+                "code": "U28SE201"
+            },
+            {
+                "name": "Professional Communication",
+                "code": "U03AE001"
+            },
+            {
+                "name": "Social Media for Business Growth",
+                "code": "U02MM041"
+            },
+            {
+                "name": "Creativity and Innovation in Business",
+                "code": "U02MM031"
+            },
+            {
+                "name": "Tourism and Travel Management",
+                "code": "U29OE021"
+            },
+            {
+                "name": "Vlogging",
+                "code": "U30OE021"
+            },
+            {
+                "name": "Business Law",
+                "code": "U28PC201"
+            },
+            {
+                "name": "Management Accounting",
+                "code": "U28PC202"
+            }
+        ],
+        "III": [
+            {
+                "name": "Financial Management",
+                "code": "U28PC301"
+            },
+            {
+                "name": "Image Design (Open Elective III)",
+                "code": "U04OE031"
+            },
+            {
+                "name": "English For Competative Examination \n(Open Elective III)",
+                "code": "U29OE031"
+            },
+            {
+                "name": "Marketing Management",
+                "code": "U28PC302"
+            },
+            {
+                "name": "Foreign Language (German)",
+                "code": "U02AE301"
+            },
+            {
+                "name": "Foreign Language (French)",
+                "code": "U02AE302"
+            },
+            {
+                "name": "R Programming",
+                "code": "U02MM022"
+            },
+            {
+                "name": "Business Planning",
+                "code": "U02MM032"
+            },
+            {
+                "name": "Digital Marketing",
+                "code": "U02MM042"
+            },
+            {
+                "name": "Business Research Methods",
+                "code": "U28PC303"
+            }
+        ],
+        "IV": [
+            {
+                "name": "Human Resource Management",
+                "code": "U28PC401"
+            },
+            {
+                "name": "Universal Human Values-II",
+                "code": "U03VE004"
+            },
+            {
+                "name": "Operations Management",
+                "code": "U28PC402"
+            },
+            {
+                "name": "International Business Management",
+                "code": "U28PC403"
+            },
+            {
+                "name": "Dairy Science (Open Elective IV)",
+                "code": "U25OE041"
+            },
+            {
+                "name": "Photo editing (Open Elective IV)",
+                "code": "U30OE041"
+            },
+            {
+                "name": "Management Information System",
+                "code": "U28SE401"
+            },
+            {
+                "name": "New Venture Management (Minor Course III)",
+                "code": "U02MM033"
+            },
+            {
+                "name": "Neuro-Marketing (Minor Course III)",
+                "code": "U02MM043"
+            },
+            {
+                "name": "Big Data Analytics(Minor Course III)",
+                "code": "U02MM023"
+            }
+        ]
+    },
+    "29:Bachelor of Arts": {
+        "I": [
+            {
+                "name": "Constitution of India",
+                "code": "U03VE001"
+            },
+            {
+                "name": "Indian Society, Art & Culture ",
+                "code": "U29IK101"
+            },
+            {
+                "name": "Blogging (Open Elective-I)",
+                "code": "U30OE011"
+            },
+            {
+                "name": "Professional Communication",
+                "code": "U03AE001"
+            },
+            {
+                "name": "Physical Geography",
+                "code": "U29PC101"
+            },
+            {
+                "name": "Introduction to History",
+                "code": "U29PC102"
+            },
+            {
+                "name": "Disaster Management ",
+                "code": "U29SE101"
+            }
+        ],
+        "II": [
+            {
+                "name": "Human Geography",
+                "code": "U29PC201"
+            },
+            {
+                "name": "English",
+                "code": "U03AE002"
+            },
+            {
+                "name": "Introduction to Political Science",
+                "code": "U29MM001"
+            },
+            {
+                "name": "News and Contemporary Issues",
+                "code": "U30MM011"
+            },
+            {
+                "name": "Environmental Science",
+                "code": "U01VE003"
+            },
+            {
+                "name": "Vlogging (Open Elective-II)",
+                "code": "U30OE021"
+            },
+            {
+                "name": "Ancient History of India",
+                "code": "U29PC202"
+            },
+            {
+                "name": "Sustainable Development",
+                "code": "U29SE202"
+            }
+        ],
+        "III": [
+            {
+                "name": "Modern Indian Language-Hindi",
+                "code": "U03AE003"
+            },
+            {
+                "name": "Modern Indian Language-Sanskrit",
+                "code": "U03AE004"
+            },
+            {
+                "name": "Modern Indian Language-Marathi",
+                "code": "U03AE005"
+            },
+            {
+                "name": "Image Design (Open Elective-III)",
+                "code": "U04OE031"
+            },
+            {
+                "name": "Indian Government & Politics\n (Multidisciplinary Minor-II)",
+                "code": "U29MM002"
+            },
+            {
+                "name": "Climatology",
+                "code": "U29PC301"
+            },
+            {
+                "name": "History of Medieval India",
+                "code": "U29PC302"
+            },
+            {
+                "name": "Applications of GIS",
+                "code": "U29VS303"
+            }
+        ],
+        "IV": [
+            {
+                "name": "Geomorphology",
+                "code": "U29PC401"
+            },
+            {
+                "name": "Cartography",
+                "code": "U29AE401"
+            },
+            {
+                "name": "History of Modern India",
+                "code": "U29PC402"
+            },
+            {
+                "name": "Photo Editing (Open Elective-IV)",
+                "code": "U30OE041"
+            },
+            {
+                "name": "Comparative Government and Politics\n (Multidisciplinary Minor-III)",
+                "code": "U29MM003"
+            }
+        ]
+    },
+    "30:Bachelor of Arts  in Journalism & Mass Communication": {
+        "I": [
+            {
+                "name": "Constitution of India",
+                "code": "U03VE001"
+            },
+            {
+                "name": "Discovery of India",
+                "code": "U30IK101"
+            },
+            {
+                "name": "Basics of Marketing (Open Elective -I)",
+                "code": "U28OE011"
+            },
+            {
+                "name": "Professional Communication ",
+                "code": "U03AE001"
+            },
+            {
+                "name": "Introduction to Communication",
+                "code": "U30PC101"
+            },
+            {
+                "name": "Introduction to Journalism",
+                "code": "U30PC102"
+            }
+        ],
+        "II": [
+            {
+                "name": "English ",
+                "code": "U03AE002"
+            },
+            {
+                "name": "News & Contemporary Issues",
+                "code": "U30MM011"
+            },
+            {
+                "name": "Introduction to Political Science",
+                "code": "U29MM001"
+            },
+            {
+                "name": "Environmental Science",
+                "code": "U01VE003"
+            },
+            {
+                "name": "Tourism and Travel Management (Open Elective II)",
+                "code": "U29OE021"
+            },
+            {
+                "name": "Caligraphy (Open Elective-II)",
+                "code": "U04OE021"
+            },
+            {
+                "name": "Introduction to Mass Media",
+                "code": "U30PC201"
+            },
+            {
+                "name": "News Reporting and Editing-I",
+                "code": "U30PC202"
+            }
+        ],
+        "III": [
+            {
+                "name": "Modern Indian Language-Hindi",
+                "code": "U03AE003"
+            },
+            {
+                "name": "Modern Indian Language-Sanskrit",
+                "code": "U03AE004"
+            },
+            {
+                "name": "Modern Indian Language-Marathi",
+                "code": "U03AE005"
+            },
+            {
+                "name": "Green Chemistry :Sustainable Development And ClimateChange (Open Elective - III)",
+                "code": "U21OE031"
+            },
+            {
+                "name": "Introduction to Radio",
+                "code": "U30PC301"
+            },
+            {
+                "name": "Writing For Media (Multidisciplinary Minor-II)",
+                "code": "U30MM012"
+            },
+            {
+                "name": "News Reporting and Editing-II",
+                "code": "U30PC302"
+            }
+        ],
+        "IV": [
+            {
+                "name": "Television Journalism",
+                "code": "U30PC401"
+            },
+            {
+                "name": "Digital Journalism",
+                "code": "U30PC402"
+            },
+            {
+                "name": "Write to Information Act (Open Elective -IV)",
+                "code": "U30OE041"
+            },
+            {
+                "name": "Folk Art Design  (Open Elective -IV)",
+                "code": "U04OE041"
+            },
+            {
+                "name": "Media Law &Ethics",
+                "code": "U30MM013"
+            }
+        ]
+    },
+    "Bachelor of Design": {
+        "I": [
+            {
+                "name": "Constitution of India",
+                "code": "U03VE001"
+            },
+            {
+                "name": "Professional Communication ",
+                "code": "U03AE001"
+            }
+        ],
+        "III": [
+            {
+                "name": "Environmental Sciences ",
+                "code": "U01VE003"
+            },
+            {
+                "name": "Design Thinking & Innovation (Open Elective I)",
+                "code": "U04OE033"
+            }
+        ],
+        "IV": [
+            {
+                "name": "Open Elective II",
+                "code": "UXXOE03X"
+            },
+            {
+                "name": "Universal Human Values-II",
+                "code": "U03VE004"
+            }
+        ]
+    },
+    "68:M. Tech Civil Engineering(Structural Enggineering)": {
+        "I": [
+            {
+                "name": "Structural Dynamics",
+                "code": "P68PC101"
+            },
+            {
+                "name": "Advanced Structural Analysis",
+                "code": "P68PC102"
+            },
+            {
+                "name": "Intellectual Property Rights",
+                "code": "P76OE011"
+            },
+            {
+                "name": "Advanced Design of Concrete Structures",
+                "code": "P68PC103"
+            },
+            {
+                "name": "Repair of Concrete Structures (Program Elective-I)",
+                "code": "P68PE103"
+            },
+            {
+                "name": "Research Methodology",
+                "code": "P01RM101"
+            }
+        ],
+        "II": [
+            {
+                "name": "Research Publications and Ethics",
+                "code": "P01RM201"
+            },
+            {
+                "name": "Multimedia Applications  (Open/Multidisciplinary Elective II)",
+                "code": "P72OE201"
+            },
+            {
+                "name": "Finite Element Method",
+                "code": "P68PC201"
+            },
+            {
+                "name": "Advanced Design of Steel Structures",
+                "code": "P68PC202"
+            },
+            {
+                "name": "Earthquake Resistant Design of Structures",
+                "code": "P68PC203"
+            },
+            {
+                "name": "Advanced Design of Foundations (Program Specific Elective II)",
+                "code": "P68PE203"
+            }
+        ]
+    },
+    "67:M. Tech Civil Engineering(Construction Enggineering & Managemant)": {
+        "I": [
+            {
+                "name": "Construction Project Planning",
+                "code": "P67PC101"
+            },
+            {
+                "name": "Construction Quality and  Safety Management",
+                "code": "P67PC102"
+            },
+            {
+                "name": "Intellectual Property Rights (Open/ Elective I)",
+                "code": "P76OE011"
+            },
+            {
+                "name": "Construction Equipment and Management",
+                "code": "P67PC103"
+            },
+            {
+                "name": "Project Formulation and Appraisal \n(Program Specific Elective I)",
+                "code": "P67PE103"
+            },
+            {
+                "name": "Research Methodology",
+                "code": "P01RM101"
+            }
+        ],
+        "II": [
+            {
+                "name": "Research Publications and Ethics",
+                "code": "P01RM201"
+            },
+            {
+                "name": "Multimedia Applications (Open/Multidisciplinary Elective II)",
+                "code": "P72OE201"
+            },
+            {
+                "name": "Quantitative Techniques in Management",
+                "code": "P67PC201"
+            },
+            {
+                "name": "Legal Aspect in Construction",
+                "code": "P67PC202"
+            },
+            {
+                "name": "Project Budgeting and Finance",
+                "code": "P67PC203"
+            },
+            {
+                "name": "Human Resource Management in Construction (Program Specific Elective II)",
+                "code": "P67PE201"
+            }
+        ]
+    },
+    "70:M. Tech Artifical Intelligence and Data Science": {
+        "I": [
+            {
+                "name": "Linear Algebra and Calculus",
+                "code": "P70PC101"
+            },
+            {
+                "name": "Cloud Computing",
+                "code": "P70PC102"
+            },
+            {
+                "name": "Intellectual Property Rights",
+                "code": "P76OE011"
+            },
+            {
+                "name": "Scalable Systems for Data Science",
+                "code": "P70PC103"
+            },
+            {
+                "name": "Generative AI (Program Specific Elective I)",
+                "code": "P70PE101"
+            },
+            {
+                "name": "Research Methodology",
+                "code": "P01RM101"
+            }
+        ],
+        "II": [
+            {
+                "name": "Research Publications and Ethics",
+                "code": "P01RM201"
+            },
+            {
+                "name": "Multimedia Applications\n (Open/Multidisciplinary Elective II)",
+                "code": "P72OE201"
+            },
+            {
+                "name": "Statistics for Signal Analysis",
+                "code": "P70PC201"
+            },
+            {
+                "name": "Optimization Techniques for Analytics",
+                "code": "P70PC202"
+            },
+            {
+                "name": "Deep Learning",
+                "code": "P70PC203"
+            },
+            {
+                "name": "Pattern Recognition (Program Specific Elective II)",
+                "code": "P70PE202"
+            }
+        ]
+    },
+    "71:M. Tech Electronics Engineerring (Embedded Systems)": {
+        "I": [
+            {
+                "name": "Automotive Electronics-I",
+                "code": "P71PC101"
+            },
+            {
+                "name": "Embedded Systems Design",
+                "code": "P71PC102"
+            },
+            {
+                "name": "Intellectual Property Rights (Open/Multidisciplinary Elective I)",
+                "code": "P76OE011"
+            },
+            {
+                "name": "Industrial Automation",
+                "code": "P71PC103"
+            },
+            {
+                "name": "Intelligence Systems (Program Specific Elective I)",
+                "code": "P71PE101"
+            },
+            {
+                "name": "Research Methodology",
+                "code": "P01RM101"
+            }
+        ],
+        "II": [
+            {
+                "name": "Research Publications and Ethics",
+                "code": "P01RM201"
+            },
+            {
+                "name": "Multimedia Applications (Open/MultidisciplinaryElectiveII)",
+                "code": "P72OE201"
+            },
+            {
+                "name": "AutomotiveElectronics-II",
+                "code": "P71PC201"
+            },
+            {
+                "name": "IOTSystemDesign",
+                "code": "P71PC202"
+            },
+            {
+                "name": "RealTimeOperatingSystems",
+                "code": "P71PC203"
+            },
+            {
+                "name": "Embedded System Design using FPGA (Program Specific ElectiveII)",
+                "code": "P71PE201"
+            }
+        ]
+    },
+    "69:M. Tech Aerospace Engineering": {
+        "I": [
+            {
+                "name": "Finite Element Method",
+                "code": "P69PC101"
+            },
+            {
+                "name": "Rocket Propulsion",
+                "code": "P69PC102"
+            },
+            {
+                "name": "Intellectual Property Rights (Open/Multidisciplinary Elective I)",
+                "code": "P76OE011"
+            },
+            {
+                "name": "Flight Performance",
+                "code": "P69PC103"
+            },
+            {
+                "name": "Advanced Aerodynamics (Program Specific Elective I)",
+                "code": "P69PE101"
+            },
+            {
+                "name": "Research Methodology",
+                "code": "P01RM101"
+            }
+        ],
+        "II": [
+            {
+                "name": "Research Publications and Ethics ",
+                "code": "P01RM201"
+            },
+            {
+                "name": "Multimedia Applications (Open/Multidisciplinary Elective II)",
+                "code": "P72OE201"
+            },
+            {
+                "name": "Computational Fluid Dynamics",
+                "code": "P69PC201"
+            },
+            {
+                "name": "Hypersonic Aerodynamics",
+                "code": "P69PC202"
+            },
+            {
+                "name": "Aerospace Structure",
+                "code": "P69PC203"
+            },
+            {
+                "name": "Boundary Layer Theory  (Program Specific Elective II)",
+                "code": "P69PE202"
+            }
+        ]
+    },
+    "59:Master of Science in Physics": {
+        "I": [
+            {
+                "name": "Quantum Mechanics",
+                "code": "P59PC101"
+            },
+            {
+                "name": "Introduction to Electrodynamics",
+                "code": "P59PC102"
+            },
+            {
+                "name": "Classical Mechanics",
+                "code": "P59PC103"
+            },
+            {
+                "name": "Mathematical Methods in Physics (Program Elective I)",
+                "code": "P59PE101"
+            },
+            {
+                "name": "Research Methodology",
+                "code": "P01RM001"
+            }
+        ],
+        "II": [
+            {
+                "name": "Condensed Matter Physics",
+                "code": "P59PC201"
+            },
+            {
+                "name": "Atomic Physics and Molecular Spectroscopy",
+                "code": "P59PC202"
+            },
+            {
+                "name": "Statistical Mechanics",
+                "code": "P59PC203"
+            },
+            {
+                "name": "Electronics (Program Elective II)",
+                "code": "P59PE201"
+            }
+        ],
+        "III": [
+            {
+                "name": "Nuclear and Particle\nPhysics",
+                "code": "P60PC301"
+            },
+            {
+                "name": "Nanoscience -I",
+                "code": "P60PC302"
+            },
+            {
+                "name": "Nanoscience -II",
+                "code": "P60PC303"
+            },
+            {
+                "name": "Experimental Techniques (Program Elective -III)",
+                "code": "P60PE301"
+            }
+        ],
+        "IV": [
+            {
+                "name": "Semiconductor Physics",
+                "code": "P60PC401"
+            },
+            {
+                "name": "Nanoscience -III",
+                "code": "P60PC402"
+            },
+            {
+                "name": "Nanoscience -IV",
+                "code": "P60PC403"
+            },
+            {
+                "name": "Renewable Energy and Storage (Program Elective IV)",
+                "code": "P60PE401"
+            }
+        ]
+    }
+};
+            // --- ELEMENT REFERENCES ---
+            const form = document.getElementById('examForm');
+            const branchSelect = document.getElementById('branch');
+            const semesterSelect = document.getElementById('semester');
+            const coursesContainer = document.getElementById('coursesContainer');
+            const coursesPlaceholder = document.getElementById('coursesPlaceholder');
+            const summaryContainer = document.getElementById('summaryContainer'); 
+            const totalCoursesInput = document.getElementById('totalCourses');
+            const feesDisplay = document.getElementById('feesDisplay'); 
+            const hiddenFeesInput = document.getElementById('hiddenFees'); 
+            const errorText = document.getElementById('errorText'); 
+            const successText = document.getElementById('successText'); 
+            const submitButton = document.getElementById('submitButton');
+            const buttonText = document.getElementById('buttonText');
+            const buttonSpinner = document.getElementById('buttonSpinner');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            const declarationCheckbox = document.getElementById('declarationCheckbox'); 
+
+            // --- FUNCTIONS ---
+
+            /**
+             * Populates and manages course visibility.
+             */
+            function populateCourses() {
+                const selectedBranch = branchSelect.value;
+                const selectedSemester = semesterSelect.value;
+                
+                const cleanBranch = selectedBranch.replace(/[^a-zA-Z0-9]/g, '-');
+                const cleanSemester = selectedSemester.replace(/[^a-zA-Z0-9]/g, '-');
+                const containerId = `courses-${cleanBranch}-${cleanSemester}`;
+
+                if (coursesPlaceholder) {
+                    coursesPlaceholder.classList.add('hidden');
+                }
+
+                coursesContainer.querySelectorAll('div[data-group="courses"]').forEach(div => {
+                    div.classList.add('hidden');
+                });
+
+                if (!selectedBranch || !selectedSemester) {
+                    if(coursesPlaceholder) {
+                        coursesPlaceholder.textContent = selectedBranch ? "Please select a semester." : "Please select your branch and semester first.";
+                        coursesPlaceholder.classList.remove('hidden');
+                    }
+                    coursesContainer.querySelectorAll('div[data-group="courses"]').forEach(div => {
+                        div.classList.add('hidden');
+                    });
+                    return; 
+                }
+
+                let courseGroup = document.getElementById(containerId);
+
+                if (!courseGroup) {
+                    const courses = (coursesByBranchAndSem[selectedBranch] && coursesByBranchAndSem[selectedBranch][selectedSemester]) ? coursesByBranchAndSem[selectedBranch][selectedSemester] : undefined;
+                    
+                    courseGroup = document.createElement('div');
+                    courseGroup.id = containerId;
+                    courseGroup.setAttribute('data-group', 'courses');
+                    courseGroup.setAttribute('data-semester', selectedSemester);
+                    
+                    if (courses && courses.length > 0) {
+                        const header = document.createElement('p');
+                        header.className = 'text-sm font-semibold text-gray-700';
+                        header.textContent = `Courses for Semester: ${selectedSemester}`;
+                        courseGroup.appendChild(header);
+
+                        const innerList = document.createElement('div');
+                        innerList.className = 'space-y-2 mt-2 pl-4';
+                        courseGroup.appendChild(innerList);
+
+                        courses.forEach(course => {
+                            const div = document.createElement('div');
+                            div.className = 'flex items-center';
+                            
+                            const input = document.createElement('input');
+                            input.type = 'checkbox';
+                            input.name = 'Courses';
+                            input.value = `${selectedSemester} - ${course.code} - ${course.name.replace(/\n/g, ' ')}`;
+                            input.id = `course-${course.code}-${cleanSemester}`;
+                            input.className = 'h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500';
+
+                            const label = document.createElement('label');
+                            label.htmlFor = input.id;
+                            const displayName = course.name.replace(/\n/g, '<br>');
+                            label.innerHTML = `${displayName} <span class="ml-2 text-sm text-gray-500 font-mono">(${course.code})</span>`;
+                            label.className = 'ml-3 block text-sm text-gray-700';
+
+                            div.appendChild(input);
+                            div.appendChild(label);
+                            innerList.appendChild(div);
+                        });
+                    } else {
+                        courseGroup.innerHTML = `<p class="text-sm text-gray-500">No courses defined for Branch: ${branchSelect.options[branchSelect.selectedIndex].text}, Semester: ${selectedSemester}.</p>`;
+                    }
+                    coursesContainer.appendChild(courseGroup);
+
+                } else {
+                    courseGroup.classList.remove('hidden');
+                }
+            }
+            
+            /**
+             * Updates the summary box and fees.
+             */
+            function updateSummary() {
+                const allCheckedBoxes = coursesContainer.querySelectorAll('input[type="checkbox"]:checked');
+                const totalCourses = allCheckedBoxes.length;
+                
+                const feesPerCourse = 300;
+                const totalFees = totalCourses * feesPerCourse;
+                
+                const formattedFees = new Intl.NumberFormat('en-IN', {
+                    style: 'currency',
+                    currency: 'INR',
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }).format(totalFees).replace('₹', '₹ ');
+                
+                totalCoursesInput.value = totalCourses;
+                feesDisplay.textContent = formattedFees;
+                hiddenFeesInput.value = formattedFees;
+                
+                summaryContainer.innerHTML = '';
+                
+                if (allCheckedBoxes.length === 0) {
+                    summaryContainer.innerHTML = '<p class="text-sm text-gray-500">No courses selected yet.</p>';
+                } else {
+                    const list = document.createElement('ul');
+                    list.className = 'list-disc list-inside space-y-1';
+                    
+                    allCheckedBoxes.forEach(checkbox => {
+                        const item = document.createElement('li');
+                        item.className = 'text-sm text-gray-800';
+                        item.textContent = checkbox.value.replace(/\n/g, ' ');
+                        list.appendChild(item);
+                    });
+                    summaryContainer.appendChild(list);
+                }
+            }
+
+            /**
+             * Handles the form submission.
+             */
+            async function handleFormSubmit(e) {
+                e.preventDefault(); 
+
+                if (!formScriptURL || !formScriptURL.startsWith('https://')) {
+                     showError('Form is not configured. Please check the formScriptURL variable.');
+                     return;
+                }
+
+                setLoading(true);
+                hideMessages();
+
+                try {
+                    const formData = new FormData(form);
+                    
+                    formData.set('TotalCourses', totalCoursesInput.value);
+                    formData.delete('Semester');
+                    formData.set('Fees', hiddenFeesInput.value);
+                    
+                    const response = await fetch(formScriptURL, {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        if (result.status === 'success') {
+                            // --- MODIFIED: Show the exact message from the backend ---
+                            showSuccess(result.message); 
+                            form.reset(); 
+                            coursesContainer.innerHTML = ''; 
+                            if(coursesPlaceholder) {
+                                coursesPlaceholder.textContent = "Please select your branch and semester first.";
+                                coursesPlaceholder.classList.remove('hidden');
+                            }
+                            updateSummary(); 
+                            resetSemesterDropdown();
+                        } else {
+                            throw new Error(result.message || 'Submission failed.');
+                        }
+                    } else {
+                        throw new Error(`Network response was not ok. Status: ${response.status}`);
+                    }
+                } catch (error) {
+                    console.error('Error submitting form:', error);
+                    showError(`Submission failed. ${error.message}`);
+                } finally {
+                    setLoading(false);
+                }
+            }
+            
+            /**
+             * Resets the semester dropdown to its initial state.
+             */
+            function resetSemesterDropdown() {
+                while (semesterSelect.options.length > 1) {
+                    semesterSelect.remove(1);
+                }
+                semesterSelect.value = '';
+                semesterSelect.options[0].textContent = 'Select branch first';
+            }
+
+            // --- Helper Functions for UI ---
+
+            function setLoading(isLoading) {
+                if (isLoading) {
+                    submitButton.disabled = true;
+                    buttonText.classList.add('hidden');
+                    buttonSpinner.classList.remove('hidden');
+                } else {
+                    submitButton.disabled = !declarationCheckbox.checked;
+                    buttonText.classList.remove('hidden');
+                    buttonSpinner.classList.add('hidden');
+                }
+            }
+
+            function hideMessages() {
+                successMessage.classList.add('hidden');
+                errorMessage.classList.add('hidden');
+                errorText.textContent = "An error occurred. Please try submitting the form again.";
+            }
+
+            function showSuccess(message) {
+                successText.textContent = message;
+                successMessage.classList.remove('hidden');
+                errorMessage.classList.add('hidden');
+                window.scrollTo(0, 0); 
+            }
+
+            function showError(message) {
+                errorText.textContent = message;
+                errorMessage.classList.remove('hidden');
+                successMessage.classList.add('hidden');
+                window.scrollTo(0, 0);
+            }
+
+
+            // --- EVENT LISTENERS ---
+            
+            branchSelect.addEventListener('change', () => {
+                const selectedBranch = branchSelect.value;
+                const semesters = selectedBranch ? Object.keys(coursesByBranchAndSem[selectedBranch] || {}) : [];
+                
+                resetSemesterDropdown();
+                
+                if (semesters.length > 0) {
+                    semesterSelect.options[0].textContent = 'Select your semester';
+                    semesters.sort().forEach(semester => {
+                        const option = document.createElement('option');
+                        option.value = semester;
+                        option.textContent = semester;
+                        semesterSelect.appendChild(option);
+                    });
+                }
+
+                semesterSelect.value = '';
+                populateCourses();
+                updateSummary();
+            });
+
+            semesterSelect.addEventListener('change', populateCourses);
+            
+            coursesContainer.addEventListener('change', (e) => {
+                if (e.target.type === 'checkbox') {
+                    updateSummary();
+                }
+            });
+
+            declarationCheckbox.addEventListener('change', () => {
+                submitButton.disabled = !declarationCheckbox.checked;
+            });
+            
+            form.addEventListener('submit', handleFormSubmit);
+
+            // --- INITIALIZATION ---
+            updateSummary();
+        });
+    </script>
+</body>
+</html>
+
