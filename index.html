@@ -85,25 +85,25 @@
                     </fieldset>
 
                     <!-- Academic Details Section -->
-                    <fieldset class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <fieldset class="space-y-6">
                         <div>
                             <label for="branch" class="block text-sm font-medium text-gray-700">Branch</label>
-                            <!-- --- MODIFIED: Branch list is now populated from your new CSV. --- -->
+                            <!-- --- REBUILT: Branch list is now complete and correct. --- -->
                             <select id="branch" name="Branch" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-10 px-3">
                                 <option value="" disabled selected>Select your branch</option>
-                                <option value="11: Bachelor of Technology in Aeronautical Engineering">11: Bachelor of Technology in Aeronautical Engineering</option>
-                                <option value="12: Bachelor of Technology in Artificial Intelligence & Machine Learning">12: Bachelor of Technology in Artificial Intelligence & Machine Learning</option>
+                                <option value="11: Bachelor of Technology  in Aeronautical Engineering">11: Bachelor of Technology  in Aeronautical Engineering</option>
+                                <option value="12: Bachelor of Technology  in Artificial Intelligence & Machine Learning">12: Bachelor of Technology  in Artificial Intelligence & Machine Learning</option>
                                 <option value="12: Bachelor of Technology in Civil Engineering">12: Bachelor of Technology in Civil Engineering</option>
                                 <option value="14: Bachelor of Technology in Computer Science Engineering">14: Bachelor of Technology in Computer Science Engineering</option>
                                 <option value="15: Bachelor of Technology in Electronics & Communication Engineering">15: Bachelor of Technology in Electronics & Communication Engineering</option>
                                 <option value="16: Bachelor of Computer Application">16: Bachelor of Computer Application</option>
-                                <option value="22:Bachelor of Science in Physics">22:Bachelor of Science in Physics</option>
+                                <option value="22:Bachelor of  Science  in Physics">22:Bachelor of  Science  in Physics</option>
                                 <option value="25: Bachelor of Science in Food Science & Technology">25: Bachelor of Science in Food Science & Technology</option>
                                 <option value="26: Bachelor of Science in Medical Laboratory Technology">26: Bachelor of Science in Medical Laboratory Technology</option>
                                 <option value="27: Bachelor of Commerce">27: Bachelor of Commerce</option>
                                 <option value="28: Bachelor of Business Administration">28: Bachelor of Business Administration</option>
                                 <option value="29:Bachelor of Arts">29:Bachelor of Arts</option>
-                                <option value="30:Bachelor of Arts in Journalism & Mass Communication">30:Bachelor of Arts in Journalism & Mass Communication</option>
+                                <option value="30:Bachelor of Arts  in Journalism & Mass Communication">30:Bachelor of Arts  in Journalism & Mass Communication</option>
                                 <option value="40:Bachelor of Science Biotechnology">40:Bachelor of Science Biotechnology</option>
                                 <option value="59:Master of Science in Physics">59:Master of Science in Physics</option>
                                 <option value="60:Master of Science Chemistry">60:Master of Science Chemistry</option>
@@ -121,22 +121,26 @@
                                 <option value="Master of Business Administration in Disaster Management">Master of Business Administration in Disaster Management</option>
                             </select>
                         </div>
-                        <div>
-                            <label for="semester" class="block text-sm font-medium text-gray-700">Semester</label>
-                            <!-- --- MODIFIED: Semester list is now populated from your new CSV. --- -->
-                            <select id="semester" name="Semester" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-10 px-3">
-                                <option value="" disabled selected>Select your semester</option>
-                                <option value="I">I</option>
-                                <option value="I & II">I & II</option>
-                                <option value="II">II</option>
-                                <option value="III">III</option>
-                                <option value="IV">IV</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="totalCourses" class="block text-sm font-medium text-gray-700">Total Courses</label>
-                            <input type="number" name="TotalCourses" id="totalCourses" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-10 px-3" min="1" max="20" disabled>
-                            <p class="text-xs text-gray-500 mt-1">This field is updated by the summary.</p>
+
+                        <!-- Sub-grid for Semester and Total Courses -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="semester" class="block text-sm font-medium text-gray-700">Semester</label>
+                                <!-- --- REBUILT: Semester list is now complete and correct. --- -->
+                                <select id="semester" name="Semester" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-10 px-3">
+                                    <option value="" disabled selected>Select your semester</option>
+                                    <option value="I">I</option>
+                                    <option value="I & II">I & II</option>
+                                    <option value="II">II</option>
+                                    <option value="III">III</option>
+                                    <option value="IV">IV</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="totalCourses" class="block text-sm font-medium text-gray-700">Total Courses</label>
+                                <input type="number" name="TotalCourses" id="totalCourses" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-10 px-3" min="1" max="20" disabled>
+                                <p class="text-xs text-gray-500 mt-1">This field is updated by the summary.</p>
+                            </div>
                         </div>
                     </fieldset>
 
@@ -154,16 +158,29 @@
                     <div id="summarySection">
                         <label class="block text-sm font-medium text-gray-700">Selected Courses Summary</label>
                         <div id="summaryContainer" class="mt-2 space-y-2 p-4 border border-blue-200 rounded-md bg-blue-50 min-h-[100px]">
-                            <p class="text-sm text-gray-500">No courses selected yet.</p>
+                        <p class="text-sm text-gray-500">No courses selected yet.</p>
+                    </div>
+                </div>
+
+                <!-- --- NEW: Declaration Checkbox --- -->
+                <fieldset class="space-y-2">
+                    <div class="relative flex items-start">
+                        <div class="flex h-5 items-center">
+                            <input id="declarationCheckbox" name="declaration" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                        </div>
+                        <div class="ml-3 text-sm">
+                            <label for="declarationCheckbox" class="font-medium text-gray-700">I declare all information is correct. I am responsible for any mistakes.</label>
                         </div>
                     </div>
-                    
-                    <!-- Submission Button -->
-                    <div>
-                        <button type="submit" id="submitButton" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200 disabled:bg-gray-400">
-                            <span id="buttonText">Submit Application</span>
-                            <div id="buttonSpinner" class="hidden spinner"></div>
-                        </button>
+                </fieldset>
+                
+                <!-- Submission Button -->
+                <div>
+                    <!-- --- MODIFIED: Added 'disabled' attribute --- -->
+                    <button type="submit" id="submitButton" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed" disabled>
+                        <span id="buttonText">Submit Application</span>
+                        <div id="buttonSpinner" class="hidden spinner"></div>
+                    </button>
                     </div>
                 </div>
             </form>
@@ -178,9 +195,9 @@
             const formScriptURL = 'https://script.google.com/macros/s/AKfycbzc-UsklBLnOqLo8EgHGMMTg2xxA67mNunkf1iJazePTCy0JKLEHxyGHf-JS6E8VIjXJg/exec';
 
             // --- COURSE DATA ---
-            // --- FIXED: Repaired corrupted data in the object below ---
+            // --- REBUILT: This object is now fully populated from your CSV file. ---
             const coursesByBranchAndSem = {
-    "11: Bachelor of Technology in Aeronautical Engineering": {
+    "11: Bachelor of Technology  in Aeronautical Engineering": {
         "I & II": [
             {
                 "name": "Constitution of India",
@@ -267,7 +284,7 @@
         ],
         "IV": [
             {
-                "name": "Universal Human Values-II",
+                "name": "Universal Human Values-II ",
                 "code": "U03VE004"
             },
             {
@@ -361,11 +378,11 @@
                 "code": "U01VE003"
             },
             {
-                "name": "Structural Mechanics",
+                "name": "Structural Mechanics ",
                 "code": "U13PC301"
             },
             {
-                "name": "Building Design and Drawing",
+                "name": "Building  Design and Drawing  ",
                 "code": "U13PC302"
             },
             {
@@ -379,7 +396,7 @@
                 "code": "U03VE004"
             },
             {
-                "name": "Engineering Management",
+                "name": "Engineering Management ",
                 "code": "U02EM002"
             },
             {
@@ -387,7 +404,7 @@
                 "code": "U29OE021"
             },
             {
-                "name": "Theory of Drones (Multidisciplinary Minor II)",
+                "name": "Theory of Drones  (Multidisciplinary Minor II)",
                 "code": "U11MM032"
             },
             {
@@ -635,7 +652,7 @@
                 "code": "U11MM032"
             },
             {
-                "name": "Spacecraft Communication Systems (Multidisciplinary Minor II)",
+                "name": "Spacecraft Communication Systems  (Multidisciplinary Minor II)",
                 "code": "U11MM022"
             },
             {
@@ -652,7 +669,7 @@
             }
         ]
     },
-    "12: Bachelor of Technology in Artificial Intelligence & Machine Learning": {
+    "12: Bachelor of Technology  in Artificial Intelligence & Machine Learning": {
         "I & II": [
             {
                 "name": "Ancient Indian Knowledge fom the view point of Computer Science and Engineering",
@@ -795,7 +812,7 @@
                 "code": "U15MM022"
             },
             {
-                "name": "Spacecraft Communication Systems (Multidisciplinary Minor II)",
+                "name": "Spacecraft Communication Systems\n (Multidisciplinary Minor II)",
                 "code": "U11MM022"
             },
             {
@@ -845,7 +862,7 @@
                 "code": "P01RM201"
             },
             {
-                "name": "Leadership and Team Management (Open/Multidisciplinary Elective II",
+                "name": "Leadership and Team Management (Open/Multidisciplinary Elective II ",
                 "code": "P73OE201"
             },
             {
@@ -895,7 +912,7 @@
         ],
         "II": [
             {
-                "name": "Chemistry for Biologist",
+                "name": "Chemistry for Biologist ",
                 "code": "U21PC203"
             },
             {
@@ -941,7 +958,7 @@
                 "code": "U25PC301"
             },
             {
-                "name": "Green Chemistry :Sustainable Development And Climate Change (Open Elective-III)",
+                "name": "Green Chemistry :Sustainable\n Development And Climate\n Change (Open Elective-III)",
                 "code": "U21OE031"
             },
             {
@@ -949,7 +966,7 @@
                 "code": "U25PC302"
             },
             {
-                "name": "Fundamentals in Blood Banking (Multidisciplinary Minor-II)",
+                "name": "Fundamentals in Blood Banking\n (Multidisciplinary Minor-II)",
                 "code": "U26MM302"
             },
             {
@@ -999,11 +1016,11 @@
                 "code": "P61PC201"
             },
             {
-                "name": "Chemistry of Transition Elements",
+                "name": "Chemistry of Transition  Elements",
                 "code": "P61PC202"
             },
             {
-                "name": "Molecular Spectroscopy and Electrochemistry",
+                "name": "Molecular Spectroscopy and  Electrochemistry",
                 "code": "P61PE201"
             }
         ],
@@ -1017,7 +1034,7 @@
                 "code": "P61PC302"
             },
             {
-                "name": "Advanced Synthetic Methods and Developments in Organic Chemistry",
+                "name": "Advanced Synthetic Methods and Developments in\nOrganic Chemistry",
                 "code": "P61PC303"
             },
             {
@@ -1055,7 +1072,7 @@
                 "code": "P61PC403"
             },
             {
-                "name": "Analytical Methods in Chemical Industries (Program Elective-IV )",
+                "name": "Analytical Methods in Chemical Industries \n(Program Elective-IV )",
                 "code": "P61PE411"
             }
         ]
@@ -1093,11 +1110,11 @@
         ],
         "II": [
             {
-                "name": "Law of Contract – II (Specific Contracts)",
+                "name": "Law  of Contract – II (Specific Contracts)",
                 "code": "U76PC201"
             },
             {
-                "name": "Jurisprudence (Legal Method ,Indian Legal System and Basic theory of Law)",
+                "name": "Jurisprudence (Legal Method ,Indian Legal System and \nBasic theory of Law)",
                 "code": "U76PC202"
             },
             {
@@ -1105,7 +1122,7 @@
                 "code": "U76PC203"
             },
             {
-                "name": "Principles of Taxation Law",
+                "name": "Principles of Taxation Law ",
                 "code": "U76PC204"
             },
             {
@@ -1129,7 +1146,7 @@
                 "code": "U74PC101"
             },
             {
-                "name": "Law of Torts (Motor Vehicles Ct & Consumer Protection Act,1986)",
+                "name": "Law of Torts (Motor Vehicles Ct & Consumer \nProtection Act,1986)",
                 "code": "U74PC102"
             },
             {
@@ -1145,13 +1162,13 @@
                 "code": "U74NL103"
             },
             {
-                "name": "English Paper I: Law & Language",
+                "name": "English Paper I: Law & Language ",
                 "code": "U74LL101"
             }
         ],
         "II": [
             {
-                "name": "Law of Contract – II (Specific Contracts)",
+                "name": "Law  of Contract – II (Specific Contracts)",
                 "code": "U74PC201"
             },
             {
@@ -1171,7 +1188,7 @@
                 "code": "U74NL203"
             },
             {
-                "name": "English Paper II: Legal Professional Communication Skills",
+                "name": "English Paper II: Legal Professional\n Communication Skills",
                 "code": "U74LL201"
             }
         ]
@@ -1183,19 +1200,19 @@
                 "code": "U75PC101"
             },
             {
-                "name": "Law of Torts (Motor Vehicles Ct & Consumer Protection Act,1986)",
+                "name": "Law of Torts (Motor Vehicles Ct & Consumer \nProtection Act,1986)",
                 "code": "U75PC102"
             },
             {
-                "name": "Management Principles & Practice Paper I- Introduction to Business Management",
+                "name": "Management Principles & Practice Paper I- \nIntroduction to Business Management ",
                 "code": "U75NL101"
             },
             {
-                "name": "Business Economics Paper I-Micro Economics",
+                "name": "Business Economics Paper I-Micro Economics ",
                 "code": "U75NL102"
             },
             {
-                "name": "Financial Management Paper I- Accounting Principle and Practice",
+                "name": "Financial Management Paper I- Accounting Principle \nand Practice ",
                 "code": "U75NL103"
             },
             {
@@ -1205,7 +1222,7 @@
         ],
         "II": [
             {
-                "name": "Law of Contract – II (Specific Contracts)",
+                "name": "Law  of Contract – II (Specific Contracts)",
                 "code": "U75PC201"
             },
             {
@@ -1213,7 +1230,7 @@
                 "code": "U75PC202"
             },
             {
-                "name": "Management Principles and Practice Paper II- Organizational Behavior Behavioral Psychology",
+                "name": "Management Principles and Practice Paper II- \nOrganizational Behavior Behavioral Psychology",
                 "code": "U75NL201"
             },
             {
@@ -1221,7 +1238,7 @@
                 "code": "U75NL202"
             },
             {
-                "name": "Financial Management Paper II- Cost Accounting",
+                "name": "Financial Management Paper II- Cost Accounting ",
                 "code": "U75NL203"
             },
             {
@@ -1249,7 +1266,7 @@
                 "code": "U26PC105"
             },
             {
-                "name": "General Chemistry",
+                "name": "General  Chemistry",
                 "code": "U21PC103"
             },
             {
@@ -1267,11 +1284,11 @@
                 "code": "U03AE001"
             },
             {
-                "name": "Fundamentals of Food Technology (Multidisciplinary Minor-I)",
+                "name": "Fundamentals of Food\nTechnology (Multidisciplinary Minor-I)",
                 "code": "U25MM011"
             },
             {
-                "name": "Environment Science",
+                "name": "Environment Science ",
                 "code": "U01VE003"
             },
             {
@@ -1279,12 +1296,16 @@
                 "code": "U04OE021"
             },
             {
-                "name": "Human Anatomy and Physiology -II",
+                "name": "Human Anatomy and Physiology -II ",
                 "code": "U26PC205"
             },
             {
                 "name": "Human Anatomy-II",
                 "code": "U26PC201"
+            },
+            {
+                "name": "Professional Communication",
+                "code": "U03AE001"
             },
             {
                 "name": "Fundamentals of Food Technology",
@@ -1379,7 +1400,7 @@
                 "code": "U40PC101"
             },
             {
-                "name": "General Chemistry",
+                "name": "General  Chemistry",
                 "code": "U21PC103"
             }
         ],
@@ -1401,16 +1422,16 @@
                 "code": "U04OE021"
             },
             {
-                "name": "Professional Communication",
+                "name": "Professional Communication ",
                 "code": "U03AE001"
             },
             {
-                "name": "Environment Science",
+                "name": "Environment Science ",
                 "code": "U01VE003"
             }
         ]
     },
-    "22:Bachelor of Science in Physics": {
+    "22:Bachelor of  Science  in Physics": {
         "I": [
             {
                 "name": "Constitution of India",
@@ -1429,7 +1450,7 @@
                 "code": "U03AE001"
             },
             {
-                "name": "Physics-I",
+                "name": "Physics-I ",
                 "code": "U22PC101"
             },
             {
@@ -1447,7 +1468,7 @@
         ],
         "II": [
             {
-                "name": "English",
+                "name": "English ",
                 "code": "U03AE002"
             },
             {
@@ -1479,7 +1500,7 @@
                 "code": "U22PC201"
             },
             {
-                "name": "Mathematics-II",
+                "name": "Mathematics-II ",
                 "code": "U22PC202"
             },
             {
@@ -1539,7 +1560,7 @@
                 "code": "U16MM031"
             },
             {
-                "name": "Fundamental of Quantum Computing (Programme Elective-I)",
+                "name": "Fundamental of Quantum Computing \n(Programme Elective-I)",
                 "code": "U22PE403"
             }
         ]
@@ -1601,7 +1622,7 @@
                 "code": "U03AE001"
             },
             {
-                "name": "Creativity and Innovation in Business (Multidiscilinary Minor I)",
+                "name": "Creativity and Innovation in Business \n(Multidiscilinary Minor I)",
                 "code": "U02MM031"
             },
             {
@@ -1793,7 +1814,7 @@
                 "code": "U03AE005"
             },
             {
-                "name": "Sustainable Development and Climate Change (Open Elective III)",
+                "name": "Sustainable Development and Climate Change\n (Open Elective III)",
                 "code": "U21OE031"
             },
             {
@@ -1805,7 +1826,7 @@
                 "code": "U04OE031"
             },
             {
-                "name": "English for Compitative Examinations (Open Elective III)",
+                "name": "English for Compitative Examinations \n(Open Elective III)",
                 "code": "U29OE031"
             },
             {
@@ -1999,7 +2020,7 @@
                 "code": "U28PC207"
             },
             {
-                "name": "QuantitativeTechniques for Management",
+                "name": "QuantitativeTechniques for  Management",
                 "code": "U28SE201"
             },
             {
@@ -2013,10 +2034,6 @@
             {
                 "name": "Creativity and Innovation in Business",
                 "code": "U02MM031"
-            },
-            {
-                "name": "Environmental Science",
-                "code": "U01VE003"
             },
             {
                 "name": "Tourism and Travel Management",
@@ -2045,7 +2062,7 @@
                 "code": "U04OE031"
             },
             {
-                "name": "English For Competative Examination (Open Elective III)",
+                "name": "English For Competative Examination \n(Open Elective III)",
                 "code": "U29OE031"
             },
             {
@@ -2127,7 +2144,7 @@
                 "code": "U03VE001"
             },
             {
-                "name": "Indian Society, Art & Culture",
+                "name": "Indian Society, Art & Culture ",
                 "code": "U29IK101"
             },
             {
@@ -2147,7 +2164,7 @@
                 "code": "U29PC102"
             },
             {
-                "name": "Disaster Management",
+                "name": "Disaster Management ",
                 "code": "U29SE101"
             }
         ],
@@ -2203,7 +2220,7 @@
                 "code": "U04OE031"
             },
             {
-                "name": "Indian Government & Politics (Multidisciplinary Minor-II)",
+                "name": "Indian Government & Politics\n (Multidisciplinary Minor-II)",
                 "code": "U29MM002"
             },
             {
@@ -2237,12 +2254,12 @@
                 "code": "U30OE041"
             },
             {
-                "name": "Comparative Government and Politics (Multidisciplinary Minor-III)",
+                "name": "Comparative Government and Politics\n (Multidisciplinary Minor-III)",
                 "code": "U29MM003"
             }
         ]
     },
-    "30:Bachelor of Arts in Journalism & Mass Communication": {
+    "30:Bachelor of Arts  in Journalism & Mass Communication": {
         "I": [
             {
                 "name": "Constitution of India",
@@ -2257,7 +2274,7 @@
                 "code": "U28OE011"
             },
             {
-                "name": "Professional Communication",
+                "name": "Professional Communication ",
                 "code": "U03AE001"
             },
             {
@@ -2271,7 +2288,7 @@
         ],
         "II": [
             {
-                "name": "English",
+                "name": "English ",
                 "code": "U03AE002"
             },
             {
@@ -2347,7 +2364,7 @@
                 "code": "U30OE041"
             },
             {
-                "name": "Folk Art Design (Open Elective -IV)",
+                "name": "Folk Art Design  (Open Elective -IV)",
                 "code": "U04OE041"
             },
             {
@@ -2363,13 +2380,13 @@
                 "code": "U03VE001"
             },
             {
-                "name": "Professional Communication",
+                "name": "Professional Communication ",
                 "code": "U03AE001"
             }
         ],
         "III": [
             {
-                "name": "Environmental Sciences",
+                "name": "Environmental Sciences ",
                 "code": "U01VE003"
             },
             {
@@ -2421,7 +2438,7 @@
                 "code": "P01RM201"
             },
             {
-                "name": "Multimedia Applications (Open/Multidisciplinary Elective II)",
+                "name": "Multimedia Applications  (Open/Multidisciplinary Elective II)",
                 "code": "P72OE201"
             },
             {
@@ -2449,7 +2466,7 @@
                 "code": "P67PC101"
             },
             {
-                "name": "Construction Quality and Safety Management",
+                "name": "Construction Quality and  Safety Management",
                 "code": "P67PC102"
             },
             {
@@ -2461,7 +2478,7 @@
                 "code": "P67PC103"
             },
             {
-                "name": "Project Formulation and Appraisal (Program Specific Elective I)",
+                "name": "Project Formulation and Appraisal \n(Program Specific Elective I)",
                 "code": "P67PE103"
             },
             {
@@ -2529,7 +2546,7 @@
                 "code": "P01RM201"
             },
             {
-                "name": "Multimedia Applications (Open/Multidisciplinary Elective II)",
+                "name": "Multimedia Applications\n (Open/Multidisciplinary Elective II)",
                 "code": "P72OE201"
             },
             {
@@ -2633,7 +2650,7 @@
         ],
         "II": [
             {
-                "name": "Research Publications and Ethics",
+                "name": "Research Publications and Ethics ",
                 "code": "P01RM201"
             },
             {
@@ -2653,7 +2670,7 @@
                 "code": "P69PC203"
             },
             {
-                "name": "Boundary Layer Theory (Program Specific Elective II)",
+                "name": "Boundary Layer Theory  (Program Specific Elective II)",
                 "code": "P69PE202"
             }
         ]
@@ -2701,7 +2718,7 @@
         ],
         "III": [
             {
-                "name": "Nuclear and Particle Physics",
+                "name": "Nuclear and Particle\nPhysics",
                 "code": "P60PC301"
             },
             {
@@ -2751,6 +2768,7 @@
             const buttonSpinner = document.getElementById('buttonSpinner');
             const successMessage = document.getElementById('successMessage');
             const errorMessage = document.getElementById('errorMessage');
+            const declarationCheckbox = document.getElementById('declarationCheckbox'); // NEW
 
             // --- FUNCTIONS ---
 
@@ -2760,7 +2778,10 @@
             function populateCourses() {
                 const selectedBranch = branchSelect.value;
                 const selectedSemester = semesterSelect.value;
-                const containerId = `courses-${selectedBranch}-${selectedSemester}`;
+                // Use a more robust ID, replacing special chars
+                const cleanBranch = selectedBranch.replace(/[^a-zA-Z0-9]/g, '-');
+                const cleanSemester = selectedSemester.replace(/[^a-zA-Z0-9]/g, '-');
+                const containerId = `courses-${cleanBranch}-${cleanSemester}`;
 
                 // Hide the initial placeholder message if it exists
                 if (coursesPlaceholder) {
@@ -2806,8 +2827,10 @@
                             const input = document.createElement('input');
                             input.type = 'checkbox';
                             input.name = 'Courses'; // Google Sheet column name
+                            // --- THIS IS THE KEY CHANGE ---
+                            // Value is now "Semester - CourseCode - CourseName"
                             input.value = `${selectedSemester} - ${course.code} - ${course.name}`; // This value is sent
-                            input.id = `course-${course.code}-${selectedSemester}`; // Make ID unique
+                            input.id = `course-${course.code}-${cleanSemester}`; // Make ID unique
                             input.className = 'h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500';
 
                             const label = document.createElement('label');
@@ -2878,14 +2901,10 @@
                     // as it's not representative of all selections.
                     formData.delete('Semester');
                     
-                    const selectedSemesters = new Set();
-                    coursesContainer.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => {
-                        const group = cb.closest('div[data-group="courses"]');
-                        if (group && group.dataset.semester) {
-                            selectedSemesters.add(group.dataset.semester);
-                        }
-                    });
-                    formData.append('SelectedSemesters', Array.from(selectedSemesters).join(', '));
+                    // This is no longer needed, as the semester is part of each course value
+                    // const selectedSemesters = new Set();
+                    // ...
+                    // formData.append('SelectedSemesters', Array.from(selectedSemesters).join(', '));
                     
 
                     const response = await fetch(formScriptURL, {
@@ -2924,7 +2943,8 @@
                     buttonText.classList.add('hidden');
                     buttonSpinner.classList.remove('hidden');
                 } else {
-                    submitButton.disabled = false;
+                    // --- MODIFIED: Respect checkbox state when re-enabling ---
+                    submitButton.disabled = !declarationCheckbox.checked;
                     buttonText.classList.remove('hidden');
                     buttonSpinner.classList.add('hidden');
                 }
@@ -2951,13 +2971,41 @@
 
 
             // --- EVENT LISTENERS ---
-            branchSelect.addEventListener('change', populateCourses);
+            // --- NEW: This logic populates semesters based on branch selection ---
+            branchSelect.addEventListener('change', () => {
+                const selectedBranch = branchSelect.value;
+                const semesters = selectedBranch ? Object.keys(coursesByBranchAndSem[selectedBranch] || {}) : [];
+                
+                // Clear existing semester options (except the default)
+                while (semesterSelect.options.length > 1) {
+                    semesterSelect.remove(1);
+                }
+
+                // Add new semester options
+                semesters.sort().forEach(semester => {
+                    const option = document.createElement('option');
+                    option.value = semester;
+                    option.textContent = semester;
+                    semesterSelect.appendChild(option);
+                });
+
+                // Reset and populate courses
+                semesterSelect.value = ''; // Reset semester selection
+                populateCourses(); // This will just hide all course groups
+                updateSummary();
+            });
+
             semesterSelect.addEventListener('change', populateCourses);
             
             coursesContainer.addEventListener('change', (e) => {
                 if (e.target.type === 'checkbox') {
                     updateSummary();
                 }
+            });
+
+            // --- NEW: Event listener for the declaration checkbox ---
+            declarationCheckbox.addEventListener('change', () => {
+                submitButton.disabled = !declarationCheckbox.checked;
             });
             
             form.addEventListener('submit', handleFormSubmit);
